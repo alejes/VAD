@@ -87,7 +87,7 @@ namespace VADPhorms {
                     //{
 
                     //}
-                    chart1.Series["wave"].Points.Add(tmp);
+                    chart1.Series["wave"].Points.Add(new DataPoint((currentTime.AddMilliseconds(index*((double)MillisecOnEvent/e.BytesRecorded)) - startingTime).TotalSeconds, tmp));
                     while (chart1.Series["wave"].Points.Count > 10000)
                     {
                         chart1.Series["wave"].Points.Remove(chart1.Series["wave"].Points.First());
@@ -117,7 +117,7 @@ namespace VADPhorms {
                 }
                 for (var index = 0; index < e.BytesRecorded; index += 2)
                 {
-                    chart1.Series["energy"].Points.Add(sum);
+                    chart1.Series["energy"].Points.Add(new DataPoint((currentTime.AddMilliseconds(index * ((double)MillisecOnEvent / e.BytesRecorded)) - startingTime).TotalSeconds, sum));
                     while (chart1.Series["energy"].Points.Count > 10000)
                     {
                         chart1.Series["energy"].Points.Remove(chart1.Series["energy"].Points.First());
@@ -141,7 +141,7 @@ namespace VADPhorms {
                 {
                     //double tmp = (short)((e.Buffer[index + 1] << 8) | e.Buffer[index + 0]);
                     //tmp /= 32768.0;
-                    chart1.Series["constant"].Points.Add(700);
+                    chart1.Series["constant"].Points.Add(new DataPoint((currentTime.AddMilliseconds(index * ((double)MillisecOnEvent / e.BytesRecorded)) - startingTime).TotalSeconds, 700));
                     while (chart1.Series["constant"].Points.Count > 10000)
                     {
                         chart1.Series["constant"].Points.Remove(chart1.Series["constant"].Points.First());
@@ -166,6 +166,8 @@ namespace VADPhorms {
             ProcessWave(e);
             ProcessConstant(e);
             ProcessEnergy(e);
+            //startingTime += DateTime.Now;MillisecOnEvent;
+            currentTime = currentTime.AddMilliseconds(MillisecOnEvent);
             chartArea.RecalculateAxesScale();
             bool result = false;
             bool Tr = false;
@@ -190,9 +192,14 @@ namespace VADPhorms {
 
             chartArea = chart1.ChartAreas.FindByName("ChartArea1") ?? new ChartArea();
             chartArea.Name = "MyChartArea";
-            chartArea.AxisX.Title = "X";
-            chartArea.AxisY.Title = "Y";
+            chartArea.AxisX.Title = "Time";
+            chartArea.AxisY.Title = "Value";
             //chartArea.AxisX.IntervalType = DateTimeIntervalType.Seconds;
+            chartArea.AxisX2.Interval = 1;
+            chartArea.AxisX2.IntervalType = DateTimeIntervalType.Seconds;
+            chartArea.AxisX2.IntervalOffset = 1;
+            chartArea.AxisX2.IntervalOffsetType = DateTimeIntervalType.Minutes;
+
             //chartArea.AxisY2.MaximumAutoSize = 2.0F;
             //chartArea.AxisX.Maximum = 1000;
 
@@ -213,6 +220,9 @@ namespace VADPhorms {
 
         }
 
+        const int MillisecOnEvent = 50;
+        private DateTime startingTime;
+        private DateTime currentTime;
         private void button1_Click(object sender, EventArgs e) {
             try {
                 MessageBox.Show("Start Recording");
@@ -220,6 +230,7 @@ namespace VADPhorms {
                 //Дефолтное устройство для записи (если оно имеется)
                 //встроенный микрофон ноутбука имеет номер 0
                 waveIn.DeviceNumber = 0;
+                waveIn.BufferMilliseconds = MillisecOnEvent;
                 //Прикрепляем к событию DataAvailable обработчик, возникающий при наличии записываемых данных
                 waveIn.DataAvailable += waveIn_DataAvailable;
                 //Прикрепляем обработчик завершения записи
@@ -229,6 +240,8 @@ namespace VADPhorms {
                 //Инициализируем объект WaveFileWriter
                 writer = new WaveFileWriter(outputFilename, waveIn.WaveFormat);
                 waveIn.StartRecording();
+                startingTime = DateTime.Now;
+                currentTime = DateTime.Now;
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);

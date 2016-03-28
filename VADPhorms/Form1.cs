@@ -56,10 +56,17 @@ namespace VADPhorms {
                 }
             }
         }
+
+        private bool _isActive = false;
         //Завершаем запись
         void StopRecording() {
-            MessageBox.Show("StopRecording");
-            waveIn.StopRecording();
+            //MessageBox.Show("StopRecording");
+            if (_isActive) {
+                _isActive = false;
+                buttonStart.Enabled = true;
+                buttonEnd.Enabled = false;
+                waveIn.StopRecording();
+            }
         }
         //Окончание записи
         private void waveIn_RecordingStopped(object sender, EventArgs e) {
@@ -87,7 +94,7 @@ namespace VADPhorms {
                     //{
 
                     //}
-                    chart1.Series["wave"].Points.Add(new DataPoint((currentTime.AddMilliseconds(index*((double)MillisecOnEvent/e.BytesRecorded)) - startingTime).TotalSeconds, tmp));
+                    chart1.Series["wave"].Points.Add(new DataPoint((_currentTime.AddMilliseconds(index*((double)MillisecOnEvent/e.BytesRecorded)) - _startingTime).TotalSeconds, tmp));
                     while (chart1.Series["wave"].Points.Count > 10000)
                     {
                         chart1.Series["wave"].Points.Remove(chart1.Series["wave"].Points.First());
@@ -117,7 +124,7 @@ namespace VADPhorms {
                 }
                 for (var index = 0; index < e.BytesRecorded; index += 2)
                 {
-                    chart1.Series["energy"].Points.Add(new DataPoint((currentTime.AddMilliseconds(index * ((double)MillisecOnEvent / e.BytesRecorded)) - startingTime).TotalSeconds, sum));
+                    chart1.Series["energy"].Points.Add(new DataPoint((_currentTime.AddMilliseconds(index * ((double)MillisecOnEvent / e.BytesRecorded)) - _startingTime).TotalSeconds, sum));
                     while (chart1.Series["energy"].Points.Count > 10000)
                     {
                         chart1.Series["energy"].Points.Remove(chart1.Series["energy"].Points.First());
@@ -141,7 +148,7 @@ namespace VADPhorms {
                 {
                     //double tmp = (short)((e.Buffer[index + 1] << 8) | e.Buffer[index + 0]);
                     //tmp /= 32768.0;
-                    chart1.Series["constant"].Points.Add(new DataPoint((currentTime.AddMilliseconds(index * ((double)MillisecOnEvent / e.BytesRecorded)) - startingTime).TotalSeconds, 700));
+                    chart1.Series["constant"].Points.Add(new DataPoint((_currentTime.AddMilliseconds(index * ((double)MillisecOnEvent / e.BytesRecorded)) - _startingTime).TotalSeconds, 700));
                     while (chart1.Series["constant"].Points.Count > 10000)
                     {
                         chart1.Series["constant"].Points.Remove(chart1.Series["constant"].Points.First());
@@ -167,7 +174,7 @@ namespace VADPhorms {
             ProcessConstant(e);
             ProcessEnergy(e);
             //startingTime += DateTime.Now;MillisecOnEvent;
-            currentTime = currentTime.AddMilliseconds(MillisecOnEvent);
+            _currentTime = _currentTime.AddMilliseconds(MillisecOnEvent);
             chartArea.RecalculateAxesScale();
             bool result = false;
             bool Tr = false;
@@ -221,11 +228,19 @@ namespace VADPhorms {
         }
 
         const int MillisecOnEvent = 50;
-        private DateTime startingTime;
-        private DateTime currentTime;
+        private DateTime _startingTime;
+        private DateTime _currentTime;
         private void button1_Click(object sender, EventArgs e) {
-            try {
-                MessageBox.Show("Start Recording");
+            try
+            {
+                if (_isActive) return;
+                _isActive = true;
+                buttonStart.Enabled = false;
+                buttonEnd.Enabled = true;
+                chart1.Series["wave"].Points.Clear();
+                chart1.Series["constant"].Points.Clear();
+                chart1.Series["energy"].Points.Clear();
+                //MessageBox.Show("Start Recording");
                 waveIn = new WaveIn();
                 //Дефолтное устройство для записи (если оно имеется)
                 //встроенный микрофон ноутбука имеет номер 0
@@ -240,8 +255,8 @@ namespace VADPhorms {
                 //Инициализируем объект WaveFileWriter
                 writer = new WaveFileWriter(outputFilename, waveIn.WaveFormat);
                 waveIn.StartRecording();
-                startingTime = DateTime.Now;
-                currentTime = DateTime.Now;
+                _startingTime = DateTime.Now;
+                _currentTime = DateTime.Now;
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message);

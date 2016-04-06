@@ -96,7 +96,6 @@ class Ui_MainWindow(object):
         self.pushButtonStop.setEnabled(True)
         self.pushButtonStart.setEnabled(False)
         self.pushButtonPause.setEnabled(True)
-        # Record()
         print("start")
         runRecord()
 
@@ -127,46 +126,18 @@ class Ui_MainWindow(object):
 
         #                "Address Book (*.abk);;All Files (*)")
         # print (filename)
-    #def closeEvent(self, event):
-        #print("STOP")
-        #self.stopButtonPress()
+        # def closeEvent(self, event):
+        # print("STOP")
+        # self.stopButtonPress()
+
 
 class MyWin(QtWidgets.QMainWindow):
-
     def closeEvent(self, event):
         stopRecord()
 
-
-
-class Win(QtWidgets.QMainWindow, Ui_MainWindow, QtWidgets.QWidget):
-    def __init__(self, **kwds):
-        super().__init__(**kwds)
-        self.setupUi(self)
-
-    def closeEvent(self, event):
-        print("STOP")
-        #reply = QMessageBox.question(self, 'Message', "Are you sure to quit?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        #if reply == QMessageBox.Yes:
-         #   event.accept()
-        #else:
-         #   event.ignore()
-
     def saveWaveMenuPress(self):
-        #filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
+        # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
         print("Фиг знает, не работает")
         # print("eee")
         # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
         # self.label.setText(_translate("MainWindow", filename, None))
-
-
-
-
-#if __name__ == "__main__":
-#    import sys
-
-#    app = QtWidgets.QApplication(sys.argv)
-#    MainWindow = QtWidgets.QMainWindow()
-#    ui = Ui_MainWindow()
-#    ui.setupUi(MainWindow)
-#    MainWindow.show()
-#    sys.exit(app.exec_())

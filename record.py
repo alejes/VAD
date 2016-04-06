@@ -48,9 +48,9 @@ def Record():
     global recordState, pauseEventRunState
     CHUNK = 1024
     FORMAT = pyaudio.paInt16
-    CHANNELS = 2
-    RATE = 16000
-    RECORD_SECONDS = 5
+    CHANNELS = 1
+    RATE = 44100
+    # RECORD_SECONDS = 5
     WAVE_OUTPUT_FILENAME = "output.wav"
 
     p = pyaudio.PyAudio()
@@ -69,7 +69,7 @@ def Record():
     while recordState != RecordStates.Stop:
         print("In Record")
         data = stream.read(CHUNK)
-        #print(data)
+        # print(data)
         frames.append(data)
         pauseEventRunState.wait()
 
@@ -85,6 +85,8 @@ def Record():
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
+
+    frames = b''.join(frames)
 
     fig = plt.figure()
     s = fig.add_subplot(111)

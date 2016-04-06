@@ -8,7 +8,7 @@ from frm import *
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = MyWin()
-    ui = Win()
+    ui = Ui_MainWindow()
 
     ui.setupUi(MainWindow)
     ui.ui_prepare()

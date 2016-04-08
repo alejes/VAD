@@ -10,25 +10,17 @@ import sys
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QMainWindow, QTextEdit, QAction, QFileDialog, QApplication)
-import FigureCanvasQTAgg
-import matplotlib
-
-matplotlib.use("Qt5Agg")
-
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
 from record import *
+#import PyQtGraph
+
 import random
-
-
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
+        self.__mywindow = MainWindow
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButtonStart = QtWidgets.QPushButton(self.centralwidget)
@@ -82,65 +74,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-
-
-
-        width=5
-        height=4
-        dpi=100
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-        # We want the axes cleared every time plot() is called
-        self.axes.hold(False)
-
-        #self.compute_initial_figur()
-
-        #
-        FigureCanvas.__init__(self, fig)
-        self.setParent(object)
-
-
-        FigureCanvas.updateGeometry(self)
-        # a figure instance to plot on
-        self.figure = plt.figure()
-
-        # this is the Canvas Widget that displays the `figure`
-        # it takes the `figure` instance as a parameter to __init__
-        self.canvas = FigureCanvas(self.figure)
-
-        # this is the Navigation widget
-        # it takes the Canvas widget and a parent
-
-        self.toolbar = NavigationToolbar(self.canvas, MainWindow)
-
-        # Just some button connected to `plot` method
-        #self.button = QtGui.QPushButton('Plot')
-        #self.button.clicked.connect(self.plot)
-
-        # set the layout
-        #layout = QtGui.QVBoxLayout()
-        #layout.addWidget(self.toolbar)
-        #layout.addWidget(self.canvas)
-        #layout.addWidget(self.button)
-        #self.setLayout(layout)
-
-    def plot(self):
-        ''' plot some random stuff '''
-        # random data
-        data = [random.random() for i in range(10)]
-
-        # create an axis
-        ax = self.figure.add_subplot(111)
-
-        # discards the old graph
-        ax.hold(False)
-
-        # plot data
-        ax.plot(data, '*-')
-
-        # refresh canvas
-        self.canvas.draw()
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "VAD"))
@@ -160,11 +93,10 @@ class Ui_MainWindow(object):
         self.pushButtonStart.clicked.connect(self.startButtonPress)
         self.pushButtonStop.clicked.connect(self.stopButtonPress)
         self.pushButtonPause.clicked.connect(self.pauseButtonPress)
-        self.actionSave_wave.triggered.connect(self.saveWaveMenuPress)
+        self.actionSave_wave.triggered.connect(self.__mywindow.saveWaveMenuPress)
         self.actionExit.triggered.connect(sys.exit)
 
     def startButtonPress(self):
-        self.plot()
         self.pushButtonStop.setEnabled(True)
         self.pushButtonStart.setEnabled(False)
         self.pushButtonPause.setEnabled(True)
@@ -184,9 +116,10 @@ class Ui_MainWindow(object):
         print("stio")
         stopRecord()
 
-    def saveWaveMenuPress(self):
-        print("Фиг знает, не работает")
+    #def saveWaveMenuPress(self):
+        #print("Фиг знает, не работает")
         #filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
+        #print("223")
         # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
         # dir = os.path.dirname(os.path.abspath(__file__))
         # filters = "Text files (*.txt);;Images (*.png *.xpm *.jpg)"
@@ -204,13 +137,15 @@ class Ui_MainWindow(object):
         # self.stopButtonPress()
 
 
-class MyWin(QtWidgets.QMainWindow):
+class MyWin(QtWidgets.QMainWindow, Ui_MainWindow):
     def closeEvent(self, event):
         stopRecord()
-
-    #def saveWaveMenuPress(self):
+    def saveWaveMenuPress(self):
+        print("Фиг знает, не работает22222")
+        filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
+        # def saveWaveMenuPress(self):
         # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
-        #print("Фиг знает, не работает")
+        # print("Фиг знает, не работает")
         # print("eee")
         # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
         # self.label.setText(_translate("MainWindow", filename, None))

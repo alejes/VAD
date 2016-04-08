@@ -9,15 +9,20 @@
 
 import sys
 import os
+import matplotlib
 
+matplotlib.use("Qt5Agg")
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import (QMainWindow, QTextEdit, QAction, QFileDialog, QApplication)
+from PyQt5.QtWidgets import (QMainWindow, QTextEdit, QAction, QFileDialog, QApplication, QMenu, QVBoxLayout,
+                             QSizePolicy, QMessageBox, QWidget)
 
 from PyQt5.QtGui import QIcon
 from record import *
 import shutil
-import PyQtGraph
-
+import random
+from numpy import arange, sin, pi
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 import random
 
 
@@ -76,6 +81,21 @@ class Ui_MainWindow(object):
         self.menuW2w2.addAction(self.actionExit)
         self.menubar.addAction(self.menuW2w2.menuAction())
 
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 40, 651, 381))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+
+        l = QVBoxLayout(self.verticalLayoutWidget)
+        dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
+        l.addWidget(dc)
+
+        #self.main_widget.setFocus()
+
+
+        #self.setCentralWidget(self.main_widget)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -122,10 +142,57 @@ class Ui_MainWindow(object):
         stopRecord()
 
 
-class MyWin(QtWidgets.QMainWindow, Ui_MainWindow):
+class MyMplCanvas(FigureCanvas):
+    """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+        # We want the axes cleared every time plot() is called
+        self.axes.hold(False)
+
+        self.compute_initial_figure()
+
+        #
+        FigureCanvas.__init__(self, fig)
+        self.setParent(parent)
+
+        FigureCanvas.setSizePolicy(self,
+                QSizePolicy.Expanding,
+                QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+
+    def compute_initial_figure(self):
+        pass
+
+class MyDynamicMplCanvas(MyMplCanvas):
+  """A canvas that updates itself every second with a new plot."""
+  def __init__(self, *args, **kwargs):
+        MyMplCanvas.__init__(self, *args, **kwargs)
+        timer = QtCore.QTimer(self)
+        timer.timeout.connect(self.update_figure)
+        timer.start(1000)
+
+  def compute_initial_figure(self):
+        self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
+
+  def update_figure(self):
+        # Build a list of 4 random integers between 0 and 10 (both inclusive)
+        l = [random.randint(0, 10) for i in range(4)]
+
+        self.axes.plot([0, 1, 2, 3], l, 'r')
+        self.draw()
+
+
+class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        QMainWindow.__init__(self)
+
+
+
     def closeEvent(self, event):
         stopRecord()
 
     def saveWaveMenuPress(self):
         fname = QFileDialog.getSaveFileName(self, 'Open file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")
-        shutil.copyfile(QtCore.QDir.currentPath() + '/output.wav', fname[0])
+        if fname[0]:
+            shutil.copyfile(QtCore.QDir.currentPath() + '/output.wav', fname[0])

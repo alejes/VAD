@@ -9,11 +9,14 @@
 
 import sys
 import os
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QMainWindow, QTextEdit, QAction, QFileDialog, QApplication)
+
 from PyQt5.QtGui import QIcon
 from record import *
-#import PyQtGraph
+import shutil
+import PyQtGraph
 
 import random
 
@@ -118,43 +121,11 @@ class Ui_MainWindow(object):
         print("stio")
         stopRecord()
 
-    #def saveWaveMenuPress(self):
-        #print("Фиг знает, не работает")
-        #filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
-        #print("223")
-        # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
-        # dir = os.path.dirname(os.path.abspath(__file__))
-        # filters = "Text files (*.txt);;Images (*.png *.xpm *.jpg)"
-        # selected_filter = "Images (*.png *.xpm *.jpg)"
-        # options = "" # ???
-        # fileObj = QFileDialog.getOpenFileName(self, " File dialog ", dir, filters, selected_filter, options)
-        # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open file', '/home')
-        # filename = QtGui.QFileDialog.getSaveFileName(self,
-        #       "Save Address Book", 'C:\\',
-
-        #                "Address Book (*.abk);;All Files (*)")
-        # print (filename)
-        # def closeEvent(self, event):
-        # print("STOP")
-        # self.stopButtonPress()
-
 
 class MyWin(QtWidgets.QMainWindow, Ui_MainWindow):
     def closeEvent(self, event):
         stopRecord()
 
     def saveWaveMenuPress(self):
-        fname = QFileDialog.getOpenFileName(self, 'Open file', QtCore.QDir.homePath())
-
-        f = open(fname, 'r')
-
-        with f:
-            data = f.read()
-            self.textEdit.setText(data)
-        #filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', QtCore.QDir.homePath(self),"")
-        # def saveWaveMenuPress(self):
-        # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
-        # print("Фиг знает, не работает")
-        # print("eee")
-        # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
-        # self.label.setText(_translate("MainWindow", filename, None))
+        fname = QFileDialog.getSaveFileName(self, 'Open file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")
+        shutil.copyfile(QtCore.QDir.currentPath() + '/output.wav', fname[0])

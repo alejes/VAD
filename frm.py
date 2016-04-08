@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'frm.ui'
@@ -10,6 +11,7 @@ import sys
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QMainWindow, QTextEdit, QAction, QFileDialog, QApplication)
+from PyQt5.QtGui import QIcon
 from record import *
 #import PyQtGraph
 
@@ -140,9 +142,16 @@ class Ui_MainWindow(object):
 class MyWin(QtWidgets.QMainWindow, Ui_MainWindow):
     def closeEvent(self, event):
         stopRecord()
+
     def saveWaveMenuPress(self):
-        print("Фиг знает, не работает22222")
-        filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
+        fname = QFileDialog.getOpenFileName(self, 'Open file', QtCore.QDir.homePath())
+
+        f = open(fname, 'r')
+
+        with f:
+            data = f.read()
+            self.textEdit.setText(data)
+        #filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', QtCore.QDir.homePath(self),"")
         # def saveWaveMenuPress(self):
         # filename = QtGui.QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'),"")
         # print("Фиг знает, не работает")

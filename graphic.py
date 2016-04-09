@@ -5,6 +5,8 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import (QSizePolicy)
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from record import *
+from details_classes import *
 import random
 
 
@@ -19,7 +21,6 @@ class MyMplCanvas(FigureCanvas):
 
         self.compute_initial_figure()
 
-        #
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
 
@@ -40,13 +41,25 @@ class MyDynamicMplCanvas(MyMplCanvas):
         timer = QtCore.QTimer(self)
         timer.timeout.connect(self.update_figure)
         timer.start(1000)
+        self._currentId = Record.getCurrentId()
 
     def compute_initial_figure(self):
-        self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
+        pass
+        #self.axes.plot([0, 1, 2, 3], [0, 0, 0, 0, 'r')
+        #self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
 
     def update_figure(self):
-        # Build a list of 4 random integers between 0 and 10 (both inclusive)
-        l = [random.randint(0, 10) for i in range(4)]
+        if Record.recordState == RecordStates.Run:
+            # Build a list of 4 random integers between 0 and 10 (both inclusive)
+            l = [random.randint(0, 10) for i in range(4)]
+            newid = Record.getCurrentId()
+            data = Record.getDataFromTo(self._currentId, newid)
+            self._currentId = newid
 
-        self.axes.plot([0, 1, 2, 3], l, 'r')
-        self.draw()
+            data = b''.join(data)
+            data = numpy.fromstring(data, numpy.int16)
+            print(data)
+            print(data.size)
+
+            self.axes.plot(range(0, data.size), data, 'r')
+            self.draw()

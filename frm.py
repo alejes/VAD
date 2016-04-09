@@ -127,20 +127,20 @@ class Ui_MainWindow(object):
         self.pushButtonStart.setEnabled(False)
         self.pushButtonPause.setEnabled(True)
         print("start")
-        runRecord()
+        Record.runRecord()
 
     def pauseButtonPress(self):
         self.pushButtonStop.setEnabled(True)
         self.pushButtonStart.setEnabled(True)
         print("pause")
-        pauseRecord()
+        Record.pauseRecord()
 
     def stopButtonPress(self):
         self.pushButtonStop.setEnabled(False)
         self.pushButtonStart.setEnabled(True)
         self.pushButtonPause.setEnabled(False)
         print("stio")
-        stopRecord()
+        Record.stopRecord()
 
 
 
@@ -152,7 +152,7 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
     def closeEvent(self, event):
-        stopRecord()
+        Record.stopRecord()
 
     def saveWaveMenuPress(self):
         fname = QFileDialog.getSaveFileName(self, 'Open file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")

@@ -20,6 +20,8 @@ from record import *
 from graphic import *
 import shutil
 from register import *
+from indicators import *
+from imprt import *
 import random
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -88,9 +90,10 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName("verticalLayout")
 
-        l = QVBoxLayout(self.verticalLayoutWidget)
-        dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
-        l.addWidget(dc)
+        # l = QVBoxLayout(self.verticalLayoutWidget)
+        # dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
+        # l.addWidget(dc)
+        # l.removeWidget()
 
         # self.main_widget.setFocus()
 
@@ -124,25 +127,25 @@ class Ui_MainWindow(object):
         self.checkBoxWave.clicked.connect(self.waveCheckBoxPress)
         self.checkBoxEnergy.clicked.connect(self.energyCheckBoxPress)
         self.checkBoxZCR.clicked.connect(self.zcrCheckBoxPress)
-        Register.addIndicator(Indicator.Wave)
+        Register.addIndicator(Indicators.Wave)
 
     def waveCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
-            Register.addIndicator(Indicator.Wave)
+            Register.addIndicator(Indicators.Wave)
         else:
-            Register.removeIndicator(Indicator.Wave)
+            Register.removeIndicator(Indicators.Wave)
 
     def energyCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
-            Register.addIndicator(Indicator.Energy)
+            Register.addIndicator(Indicators.Energy)
         else:
-            Register.removeIndicator(Indicator.Energy)
+            Register.removeIndicator(Indicators.Energy)
 
     def zcrCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
-            Register.addIndicator(Indicator.ZCR)
+            Register.addIndicator(Indicators.ZCR)
         else:
-            Register.removeIndicator(Indicator.ZCR)
+            Register.removeIndicator(Indicators.ZCR)
 
     def startButtonPress(self):
         self.pushButtonStop.setEnabled(True)

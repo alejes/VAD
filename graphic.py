@@ -14,7 +14,7 @@ class MyMplCanvas(FigureCanvas):
     """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
+        fig = Figure(figsize=(width, height), facecolor='none', dpi=dpi)
         self.axes = fig.add_subplot(111)
         self.axes.set_ybound(lower=-1,upper=1)
         # We want the axes cleared every time plot() is called
@@ -73,6 +73,8 @@ class MyDynamicMplCanvas(MyMplCanvas):
             # print([x for x in frange(beginid / Record.RATE, data.size, 1.0 / Record.RATE)])
 
             self.axes.plot([x for x in frange(Record.CHUNK * beginid / Record.RATE, data.size, 1.0 / Record.RATE)],
-                           data, 'r')
+                           data, 'g')
+            #self.axes.patch.set_facecolor('blue')
+            #self.axes.grid(True)
             self.axes.set_ybound(lower=-1,upper=1)
             self.draw()

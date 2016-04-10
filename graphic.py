@@ -58,7 +58,10 @@ class MyDynamicMplCanvas(MyMplCanvas):
 
             data = b''.join(data)
             data = numpy.fromstring(data, numpy.int16) / Record.AMPLITUDE
-            print(beginid / Record.RATE)
+
+            if "data_process" in self.__dict__:
+                data = self.data_process(data)
+            # print(beginid / Record.RATE)
 
             self.axes.plot([x for x in frange(Record.CHUNK * beginid / Record.RATE, data.size, 1.0 / Record.RATE)],
                            data, 'g')

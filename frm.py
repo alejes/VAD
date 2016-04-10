@@ -90,11 +90,12 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName("verticalLayout")
 
-        # l = QVBoxLayout(self.verticalLayoutWidget)
-        # dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
-        # l.addWidget(dc)
+        self.graphLayouts = QVBoxLayout(self.verticalLayoutWidget)
+        #l = QVBoxLayout(self.verticalLayoutWidget)
+            #dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
+            #self.graphLayouts.addWidget(dc)
         # l.removeWidget()
-
+        #self.removeW
         # self.main_widget.setFocus()
 
 
@@ -127,23 +128,23 @@ class Ui_MainWindow(object):
         self.checkBoxWave.clicked.connect(self.waveCheckBoxPress)
         self.checkBoxEnergy.clicked.connect(self.energyCheckBoxPress)
         self.checkBoxZCR.clicked.connect(self.zcrCheckBoxPress)
-        Register.addIndicator(Indicators.Wave)
+        Register.addIndicator(Indicators.Wave, self)
 
     def waveCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
-            Register.addIndicator(Indicators.Wave)
+            Register.addIndicator(Indicators.Wave, self)
         else:
             Register.removeIndicator(Indicators.Wave)
 
     def energyCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
-            Register.addIndicator(Indicators.Energy)
+            Register.addIndicator(Indicators.Energy, self)
         else:
             Register.removeIndicator(Indicators.Energy)
 
     def zcrCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
-            Register.addIndicator(Indicators.ZCR)
+            Register.addIndicator(Indicators.ZCR, self)
         else:
             Register.removeIndicator(Indicators.ZCR)
 

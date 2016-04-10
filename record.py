@@ -15,6 +15,9 @@ class Record:
     pauseEventRunState = threading.Event()
     # записываемые данные
     _frames = []
+    RATE = 44100
+    CHUNK = 1024
+    AMPLITUDE = 2 ** 15
 
     @staticmethod
     def runRecord():
@@ -67,10 +70,9 @@ class Record:
 
     @staticmethod
     def Record():
-        CHUNK = 1024
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
-        RATE = 44100
+
         # RECORD_SECONDS = 5
         WAVE_OUTPUT_FILENAME = "output.wav"
 
@@ -78,15 +80,15 @@ class Record:
 
         stream = p.open(format=FORMAT,
                         channels=CHANNELS,
-                        rate=RATE,
+                        rate=Record.RATE,
                         input=True,
-                        frames_per_buffer=CHUNK)
+                        frames_per_buffer=Record.CHUNK)
 
         print("Recording...")
 
         while Record.recordState != RecordStates.Stop:
             print("In Record")
-            data = stream.read(CHUNK)
+            data = stream.read(Record.CHUNK)
             Record._frames.append(data)
             Record.pauseEventRunState.wait()
 
@@ -99,7 +101,7 @@ class Record:
         wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
         wf.setnchannels(CHANNELS)
         wf.setsampwidth(p.get_sample_size(FORMAT))
-        wf.setframerate(RATE)
+        wf.setframerate(Record.RATE)
         wf.writeframes(b''.join(Record._frames))
         wf.close()
 

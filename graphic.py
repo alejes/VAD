@@ -16,7 +16,7 @@ class MyMplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         fig = Figure(figsize=(width, height), facecolor='none', dpi=dpi)
         self.axes = fig.add_subplot(111)
-        self.axes.set_ybound(lower=-1,upper=1)
+        self.axes.set_ybound(lower=-1, upper=1)
         # We want the axes cleared every time plot() is called
         self.axes.hold(False)
 
@@ -46,12 +46,6 @@ class MyDynamicMplCanvas(MyMplCanvas):
 
     def compute_initial_figure(self):
         pass
-        # self.axes.plot([0, 1, 2, 3], [0, 0, 0, 0, 'r')
-        #self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
-        #self.axis('off')
-        #self.axes.autoscale(self, False)
-        #r = int(10 * random.random())
-        #self.axis.set_xlabel(str(r))
 
     def update_figure(self):
         if Record.recordState == RecordStates.Run:
@@ -64,17 +58,11 @@ class MyDynamicMplCanvas(MyMplCanvas):
 
             data = b''.join(data)
             data = numpy.fromstring(data, numpy.int16) / Record.AMPLITUDE
-            # print( Record.AMPLITUDE)
-            print("CurrentId = " + str(beginid) + " next = " + str(Record.getCurrentId()))
-            # print(data)
-            # print(data.size)
             print(beginid / Record.RATE)
-
-            # print([x for x in frange(beginid / Record.RATE, data.size, 1.0 / Record.RATE)])
 
             self.axes.plot([x for x in frange(Record.CHUNK * beginid / Record.RATE, data.size, 1.0 / Record.RATE)],
                            data, 'g')
-            #self.axes.patch.set_facecolor('blue')
-            #self.axes.grid(True)
-            self.axes.set_ybound(lower=-1,upper=1)
+            # self.axes.patch.set_facecolor('blue')
+            # self.axes.grid(True)
+            self.axes.set_ybound(lower=-1, upper=1)
             self.draw()

@@ -87,7 +87,7 @@ class Record:
         print("Recording...")
 
         while Record.recordState != RecordStates.Stop:
-            print("In Record")
+            #print("In Record")
             data = stream.read(Record.CHUNK)
             Record._frames.append(data)
             Record.pauseEventRunState.wait()

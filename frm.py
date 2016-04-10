@@ -15,11 +15,11 @@ matplotlib.use("Qt5Agg")
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QMainWindow, QTextEdit, QAction, QFileDialog, QApplication, QMenu, QVBoxLayout,
                              QSizePolicy, QMessageBox, QWidget)
-
 from PyQt5.QtGui import QIcon
 from record import *
 from graphic import *
 import shutil
+from register import *
 import random
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -92,10 +92,10 @@ class Ui_MainWindow(object):
         dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
         l.addWidget(dc)
 
-        #self.main_widget.setFocus()
+        # self.main_widget.setFocus()
 
 
-        #self.setCentralWidget(self.main_widget)
+        # self.setCentralWidget(self.main_widget)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -121,6 +121,28 @@ class Ui_MainWindow(object):
         self.pushButtonPause.clicked.connect(self.pauseButtonPress)
         self.actionSave_wave.triggered.connect(self.__mywindow.saveWaveMenuPress)
         self.actionExit.triggered.connect(sys.exit)
+        self.checkBoxWave.clicked.connect(self.waveCheckBoxPress)
+        self.checkBoxEnergy.clicked.connect(self.energyCheckBoxPress)
+        self.checkBoxZCR.clicked.connect(self.zcrCheckBoxPress)
+        Register.addIndicator(Indicator.Wave)
+
+    def waveCheckBoxPress(self):
+        if self.checkBoxWave.isChecked():
+            Register.addIndicator(Indicator.Wave)
+        else:
+            Register.removeIndicator(Indicator.Wave)
+
+    def energyCheckBoxPress(self):
+        if self.checkBoxWave.isChecked():
+            Register.addIndicator(Indicator.Energy)
+        else:
+            Register.removeIndicator(Indicator.Energy)
+
+    def zcrCheckBoxPress(self):
+        if self.checkBoxWave.isChecked():
+            Register.addIndicator(Indicator.ZCR)
+        else:
+            Register.removeIndicator(Indicator.ZCR)
 
     def startButtonPress(self):
         self.pushButtonStop.setEnabled(True)
@@ -143,13 +165,9 @@ class Ui_MainWindow(object):
         Record.stopRecord()
 
 
-
-
 class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
-
-
 
     def closeEvent(self, event):
         Record.stopRecord()

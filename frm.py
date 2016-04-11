@@ -85,24 +85,12 @@ class Ui_MainWindow(object):
         self.menuW2w2.addAction(self.actionExit)
         self.menubar.addAction(self.menuW2w2.menuAction())
 
-        self.verticalLayoutWidget = []
-        self.verticalLayout = []
-        self.graphLayouts = []
-        self.verticalLayoutWidget.append(QtWidgets.QWidget(self.centralwidget))
-        self.verticalLayoutWidget[0].setGeometry(QtCore.QRect(10, 40, 651, 381))
-        self.verticalLayoutWidget[0].setObjectName("verticalLayoutWidget")
-        self.verticalLayout.append(QtWidgets.QVBoxLayout(self.verticalLayoutWidget[0]))
-        self.verticalLayout[0].setObjectName("verticalLayout")
+        self.verticalLayoutWidget = {}
+        self.verticalLayout = {}
+        self.graphLayouts = {}
 
-        self.graphLayouts.append(QVBoxLayout(self.verticalLayoutWidget[0]))
 
-        self.verticalLayoutWidget.append(QtWidgets.QWidget(self.centralwidget))
-        self.verticalLayoutWidget[1].setGeometry(QtCore.QRect(10, 440, 651, 381))
-        self.verticalLayoutWidget[1].setObjectName("verticalLayoutWidget")
-        self.verticalLayout.append(QtWidgets.QVBoxLayout(self.verticalLayoutWidget[1]))
-        self.verticalLayout[1].setObjectName("verticalLayout")
 
-        self.graphLayouts.append(QVBoxLayout(self.verticalLayoutWidget[1]))
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

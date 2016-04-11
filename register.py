@@ -28,16 +28,25 @@ class Register:
         currentSize = ui.mywindow.size()
         currentSize.setHeight(currentSize.height() + 400)
         ui.mywindow.resize(currentSize)
+
+        ui.verticalLayoutWidget[indic] = QtWidgets.QWidget(ui.centralwidget)
+        ui.verticalLayoutWidget[indic].setGeometry(QtCore.QRect(10, 40 + 400 * (len(ui.verticalLayoutWidget) - 1), 651, 381))
+        ui.verticalLayoutWidget[indic].setObjectName("verticalLayoutWidget")
+        ui.verticalLayout[indic] = QtWidgets.QVBoxLayout(ui.verticalLayoutWidget[indic])
+        ui.verticalLayout[indic].setObjectName("verticalLayout")
+        ui.graphLayouts[indic] = QVBoxLayout(ui.verticalLayoutWidget[indic])
+
         gt = Register.activeIndicators.pop(indic, None)
         if gt is not None:
             ui.graphLayouts.removeWidget(gt)
-        ui.graphLayouts[Register.position] = QVBoxLayout(ui.verticalLayoutWidget[Register.position])
-        dc = MyDynamicMplCanvas(ui.verticalLayoutWidget[Register.position], width=5, height=4, dpi=100)
+        ui.graphLayouts[indic] = QVBoxLayout(ui.verticalLayoutWidget[indic])
+        dc = MyDynamicMplCanvas(ui.verticalLayoutWidget[indic], width=5, height=4, dpi=100)
         dc.data_process = Register.totalIndicators.get(indic).data_process
-        ui.graphLayouts[Register.position].addWidget(dc)
-        Register.position+=1
+        ui.graphLayouts[indic].addWidget(dc)
+        #Register.position+=1
 
         Register.activeIndicators[indic] = dc
+        ui.verticalLayoutWidget[indic].show()
         dc.show()
 
     @staticmethod

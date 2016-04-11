@@ -26,37 +26,20 @@ class Register:
         print("ADD")
         gt = Register.activeIndicators.pop(indic, None)
         if gt is not None:
-            # print("ee")
             ui.graphLayouts.removeWidget(gt)
-            # l.show()
-        # print(ui.verticalLayoutWidget)
         ui.graphLayouts = QVBoxLayout(ui.verticalLayoutWidget)
         dc = MyDynamicMplCanvas(ui.verticalLayoutWidget, width=5, height=4, dpi=100)
         dc.data_process = Register.totalIndicators.get(indic).data_process
         ui.graphLayouts.addWidget(dc)
-        # print(dc)
-        # ui.invalidate()
 
         Register.activeIndicators[indic] = dc
-        print(Register.activeIndicators)
         dc.show()
-        # ui.mywindow.show()
-        print("+++ALIST====")
-        for i in reversed(range(ui.graphLayouts.count())):
-            print(ui.graphLayouts.itemAt(i).widget())
-        print("+++ALIST====")
 
     @staticmethod
     def removeIndicator(indic, ui):
         gt = Register.activeIndicators.pop(indic, None)
         if gt is not None:
-            print("now getL")
-            print(gt)
             gt.setParent(None)
             while ui.graphLayouts.count():
                 item = ui.graphLayouts.takeAt(0)
                 item.widget().deleteLater()
-                # ui.graphLayouts.removeWidget(gt)
-        # gt.removeWidget()
-        # Register.activeIndicators[indic] = 2
-        print(Register.activeIndicators)

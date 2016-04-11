@@ -33,7 +33,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
-        self.__mywindow = MainWindow
+        self.mywindow = MainWindow
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButtonStart = QtWidgets.QPushButton(self.centralwidget)
@@ -91,11 +91,12 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName("verticalLayout")
 
         self.graphLayouts = QVBoxLayout(self.verticalLayoutWidget)
-        #l = QVBoxLayout(self.verticalLayoutWidget)
-            #dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
-            #self.graphLayouts.addWidget(dc)
+
+        # l = QVBoxLayout(self.verticalLayoutWidget)
+        # dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
+        # self.graphLayouts.addWidget(dc)
         # l.removeWidget()
-        #self.removeW
+        # self.removeW
         # self.main_widget.setFocus()
 
 
@@ -123,7 +124,7 @@ class Ui_MainWindow(object):
         self.pushButtonStart.clicked.connect(self.startButtonPress)
         self.pushButtonStop.clicked.connect(self.stopButtonPress)
         self.pushButtonPause.clicked.connect(self.pauseButtonPress)
-        self.actionSave_wave.triggered.connect(self.__mywindow.saveWaveMenuPress)
+        self.actionSave_wave.triggered.connect(self.mywindow.saveWaveMenuPress)
         self.actionExit.triggered.connect(sys.exit)
         self.checkBoxWave.clicked.connect(self.waveCheckBoxPress)
         self.checkBoxEnergy.clicked.connect(self.energyCheckBoxPress)
@@ -134,19 +135,19 @@ class Ui_MainWindow(object):
         if self.checkBoxWave.isChecked():
             Register.addIndicator(Indicators.Wave, self)
         else:
-            Register.removeIndicator(Indicators.Wave)
+            Register.removeIndicator(Indicators.Wave, self)
 
     def energyCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
             Register.addIndicator(Indicators.Energy, self)
         else:
-            Register.removeIndicator(Indicators.Energy)
+            Register.removeIndicator(Indicators.Energy, self)
 
     def zcrCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
             Register.addIndicator(Indicators.ZCR, self)
         else:
-            Register.removeIndicator(Indicators.ZCR)
+            Register.removeIndicator(Indicators.ZCR, self)
 
     def startButtonPress(self):
         self.pushButtonStop.setEnabled(True)

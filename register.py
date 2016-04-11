@@ -14,6 +14,7 @@ from matplotlib.figure import Figure
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (QMainWindow, QTextEdit, QAction, QFileDialog, QApplication, QMenu, QVBoxLayout,
                              QSizePolicy, QMessageBox, QWidget)
+from PyQt5.QtCore import (QRect)
 from graphic import *
 
 
@@ -30,7 +31,8 @@ class Register:
         ui.mywindow.resize(currentSize)
 
         ui.verticalLayoutWidget[indic] = QtWidgets.QWidget(ui.centralwidget)
-        ui.verticalLayoutWidget[indic].setGeometry(QtCore.QRect(10, 40 + 400 * (len(ui.verticalLayoutWidget) - 1), 651, 381))
+        ui.verticalLayoutWidget[indic].setGeometry(
+            QtCore.QRect(10, 40 + 400 * (len(ui.verticalLayoutWidget) - 1), 651, 381))
         ui.verticalLayoutWidget[indic].setObjectName("verticalLayoutWidget")
         ui.verticalLayout[indic] = QtWidgets.QVBoxLayout(ui.verticalLayoutWidget[indic])
         ui.verticalLayout[indic].setObjectName("verticalLayout")
@@ -43,7 +45,7 @@ class Register:
         dc = MyDynamicMplCanvas(ui.verticalLayoutWidget[indic], width=5, height=4, dpi=100)
         dc.data_process = Register.totalIndicators.get(indic).data_process
         ui.graphLayouts[indic].addWidget(dc)
-        #Register.position+=1
+        # Register.position+=1
 
         Register.activeIndicators[indic] = dc
         ui.verticalLayoutWidget[indic].show()
@@ -53,7 +55,29 @@ class Register:
     def removeIndicator(indic, ui):
         gt = Register.activeIndicators.pop(indic, None)
         if gt is not None:
-            gt.setParent(None)
-            while ui.graphLayouts.count():
-                item = ui.graphLayouts.takeAt(0)
-                item.widget().deleteLater()
+            botWidth = ui.verticalLayoutWidget[indic].geometry().bottomLeft().y()
+            ui.verticalLayoutWidget[indic].setParent(None)
+            ui.verticalLayoutWidget.pop(indic)
+            for key in ui.verticalLayoutWidget.keys():
+                print("BEFORE")
+                print(ui.verticalLayoutWidget[key].geometry())
+                #print(values)
+                #print(ui.verticalLayoutWidget[key].geometry().getRect()[1])
+                #curY = ui.verticalLayoutWidget[key].geometry().getRect()[1]
+                currentRect = ui.verticalLayoutWidget[key].geometry().getRect()
+                #currentRect = currentRect.setWidth(currentRect[1] - 400)
+                currentRect = QRect(currentRect[0], currentRect[1] - 400,currentRect[2], currentRect[3])
+                print(currentRect)
+                #ui.verticalLayoutWidget[key] = \
+                ui.verticalLayoutWidget[key].setGeometry(currentRect)
+                print("AFTER")
+                print(ui.verticalLayoutWidget[key].geometry())
+                #print(values.geometry())
+                ui.verticalLayoutWidget[key].show()
+            #currentSize = ui.mywindow.size()
+            #currentSize.setHeight(currentSize.height() - 400)
+            #ui.mywindow.resize(currentSize)
+            # gt.setParent(None)
+            # while ui.graphLayouts.count():
+            #   item = ui.graphLayouts.takeAt(0)
+            # item.widget().deleteLater()

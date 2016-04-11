@@ -59,7 +59,6 @@ class Register:
             ui.verticalLayoutWidget[indic].setParent(None)
             ui.verticalLayoutWidget.pop(indic)
             for key in ui.verticalLayoutWidget.keys():
-                print("BEFORE")
                 print(ui.verticalLayoutWidget[key].geometry())
                 currentRect = ui.verticalLayoutWidget[key].geometry().getRect()
 
@@ -68,12 +67,4 @@ class Register:
                     ui.verticalLayoutWidget[key].setGeometry(currentRect)
 
                 print(ui.verticalLayoutWidget[key].geometry())
-                # print(values.geometry())
                 ui.verticalLayoutWidget[key].show()
-                # currentSize = ui.mywindow.size()
-                # currentSize.setHeight(currentSize.height() - 400)
-                # ui.mywindow.resize(currentSize)
-                # gt.setParent(None)
-                # while ui.graphLayouts.count():
-                #   item = ui.graphLayouts.takeAt(0)
-                # item.widget().deleteLater()

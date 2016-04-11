@@ -33,7 +33,7 @@ import random
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(800, 100)
         self.mywindow = MainWindow
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -85,38 +85,24 @@ class Ui_MainWindow(object):
         self.menuW2w2.addAction(self.actionExit)
         self.menubar.addAction(self.menuW2w2.menuAction())
 
-        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 40, 651, 381))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        # self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        # self.verticalLayout.setObjectName("verticalLayout")
+        self.verticalLayoutWidget = []
+        self.verticalLayout = []
+        self.graphLayouts = []
+        self.verticalLayoutWidget.append(QtWidgets.QWidget(self.centralwidget))
+        self.verticalLayoutWidget[0].setGeometry(QtCore.QRect(10, 40, 651, 381))
+        self.verticalLayoutWidget[0].setObjectName("verticalLayoutWidget")
+        self.verticalLayout.append(QtWidgets.QVBoxLayout(self.verticalLayoutWidget[0]))
+        self.verticalLayout[0].setObjectName("verticalLayout")
 
-        self.verticalLayout = QtWidgets.QGridLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.verticalLayout.setSpacing(20)
-        self.verticalLayout.expandingDirections()
+        self.graphLayouts.append(QVBoxLayout(self.verticalLayoutWidget[0]))
 
-        self.graphLayouts = QGridLayout(self.verticalLayoutWidget)
+        self.verticalLayoutWidget.append(QtWidgets.QWidget(self.centralwidget))
+        self.verticalLayoutWidget[1].setGeometry(QtCore.QRect(10, 440, 651, 381))
+        self.verticalLayoutWidget[1].setObjectName("verticalLayoutWidget")
+        self.verticalLayout.append(QtWidgets.QVBoxLayout(self.verticalLayoutWidget[1]))
+        self.verticalLayout[1].setObjectName("verticalLayout")
 
-        # self.graphLayouts = QGridLayout(self.verticalLayoutWidget)
-        # self.verticalLayoutWidget.setLayout(self.graphLayouts)
-        # layout=QtGui.QGridLayout(self.main_widget)
-        # layout.setSpacing(20)
-        # layout.expandingDirections()
-
-
-        # self.graphLayouts  = gridGraphWidget()
-        # self.graphLayouts = QVBoxLayout(self.verticalLayoutWidget)
-
-        # l = QVBoxLayout(self.verticalLayoutWidget)
-        # dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
-        # self.graphLayouts.addWidget(dc)
-        # l.removeWidget()
-        # self.removeW
-        # self.main_widget.setFocus()
-
-
-        # self.setCentralWidget(self.main_widget)
+        self.graphLayouts.append(QVBoxLayout(self.verticalLayoutWidget[1]))
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

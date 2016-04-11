@@ -19,6 +19,7 @@ from PyQt5.QtGui import QIcon
 from record import *
 from graphic import *
 import shutil
+from gridWidget import *
 from register import *
 from indicators import *
 from imprt import *
@@ -87,10 +88,25 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 40, 651, 381))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setObjectName("verticalLayout")
+        # self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        # self.verticalLayout.setObjectName("verticalLayout")
 
-        self.graphLayouts = QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout = QtWidgets.QGridLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.verticalLayout.setSpacing(20)
+        self.verticalLayout.expandingDirections()
+
+        self.graphLayouts = QGridLayout(self.verticalLayoutWidget)
+
+        # self.graphLayouts = QGridLayout(self.verticalLayoutWidget)
+        # self.verticalLayoutWidget.setLayout(self.graphLayouts)
+        # layout=QtGui.QGridLayout(self.main_widget)
+        # layout.setSpacing(20)
+        # layout.expandingDirections()
+
+
+        # self.graphLayouts  = gridGraphWidget()
+        # self.graphLayouts = QVBoxLayout(self.verticalLayoutWidget)
 
         # l = QVBoxLayout(self.verticalLayoutWidget)
         # dc = MyDynamicMplCanvas(self.verticalLayoutWidget, width=5, height=4, dpi=100)
@@ -138,13 +154,13 @@ class Ui_MainWindow(object):
             Register.removeIndicator(Indicators.Wave, self)
 
     def energyCheckBoxPress(self):
-        if self.checkBoxWave.isChecked():
+        if self.checkBoxEnergy.isChecked():
             Register.addIndicator(Indicators.Energy, self)
         else:
             Register.removeIndicator(Indicators.Energy, self)
 
     def zcrCheckBoxPress(self):
-        if self.checkBoxWave.isChecked():
+        if self.checkBoxZCR.isChecked():
             Register.addIndicator(Indicators.ZCR, self)
         else:
             Register.removeIndicator(Indicators.ZCR, self)

@@ -61,23 +61,19 @@ class Register:
             for key in ui.verticalLayoutWidget.keys():
                 print("BEFORE")
                 print(ui.verticalLayoutWidget[key].geometry())
-                #print(values)
-                #print(ui.verticalLayoutWidget[key].geometry().getRect()[1])
-                #curY = ui.verticalLayoutWidget[key].geometry().getRect()[1]
                 currentRect = ui.verticalLayoutWidget[key].geometry().getRect()
-                #currentRect = currentRect.setWidth(currentRect[1] - 400)
-                currentRect = QRect(currentRect[0], currentRect[1] - 400,currentRect[2], currentRect[3])
-                print(currentRect)
-                #ui.verticalLayoutWidget[key] = \
-                ui.verticalLayoutWidget[key].setGeometry(currentRect)
-                print("AFTER")
+
+                if currentRect[1] > botWidth:
+                    currentRect = QRect(currentRect[0], currentRect[1] - 400, currentRect[2], currentRect[3])
+                    ui.verticalLayoutWidget[key].setGeometry(currentRect)
+
                 print(ui.verticalLayoutWidget[key].geometry())
-                #print(values.geometry())
+                # print(values.geometry())
                 ui.verticalLayoutWidget[key].show()
-            #currentSize = ui.mywindow.size()
-            #currentSize.setHeight(currentSize.height() - 400)
-            #ui.mywindow.resize(currentSize)
-            # gt.setParent(None)
-            # while ui.graphLayouts.count():
-            #   item = ui.graphLayouts.takeAt(0)
-            # item.widget().deleteLater()
+                # currentSize = ui.mywindow.size()
+                # currentSize.setHeight(currentSize.height() - 400)
+                # ui.mywindow.resize(currentSize)
+                # gt.setParent(None)
+                # while ui.graphLayouts.count():
+                #   item = ui.graphLayouts.takeAt(0)
+                # item.widget().deleteLater()

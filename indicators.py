@@ -8,5 +8,4 @@ class Indicators(Enum):
 
 
 class Indicator:
-    #derivedList = []
     pass

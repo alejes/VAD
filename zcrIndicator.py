@@ -9,7 +9,7 @@ class zcrIndicator(Indicator):
 
     @staticmethod
     def data_process(data):
-        return data*300
+        return data * 300
 
     pass
 

@@ -13,7 +13,7 @@ class energyIndicator(Indicator):
         for dataFrame in data:
             sum += dataFrame * dataFrame
         data.fill(sum)
-        return data * 100
+        return data
 
     pass
 

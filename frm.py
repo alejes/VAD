@@ -32,6 +32,7 @@ import random
 
 class Ui_MainWindow(object):
     initialWidth = 100
+    graphHeight = 400
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")

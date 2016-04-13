@@ -27,12 +27,12 @@ class Register:
     def addIndicator(indic, ui):
         print("ADD")
         currentSize = ui.mywindow.size()
-        currentSize.setHeight(ui.initialWidth + 400 * (len(ui.verticalLayoutWidget) + 1))
+        currentSize.setHeight(ui.initialWidth + ui.graphHeight * (len(ui.verticalLayoutWidget) + 1))
         ui.mywindow.resize(currentSize)
 
         ui.verticalLayoutWidget[indic] = QtWidgets.QWidget(ui.centralwidget)
         ui.verticalLayoutWidget[indic].setGeometry(
-            QtCore.QRect(10, 40 + 400 * (len(ui.verticalLayoutWidget) - 1), 651, 381))
+            QtCore.QRect(10, 40 + ui.graphHeight * (len(ui.verticalLayoutWidget) - 1), 651, 381))
         ui.verticalLayoutWidget[indic].setObjectName("verticalLayoutWidget")
         ui.verticalLayout[indic] = QtWidgets.QVBoxLayout(ui.verticalLayoutWidget[indic])
         ui.verticalLayout[indic].setObjectName("verticalLayout")
@@ -63,11 +63,11 @@ class Register:
                 currentRect = ui.verticalLayoutWidget[key].geometry().getRect()
 
                 if currentRect[1] > botWidth:
-                    currentRect = QRect(currentRect[0], currentRect[1] - 400, currentRect[2], currentRect[3])
+                    currentRect = QRect(currentRect[0], currentRect[1] - ui.graphHeight, currentRect[2], currentRect[3])
                     ui.verticalLayoutWidget[key].setGeometry(currentRect)
 
                 print(ui.verticalLayoutWidget[key].geometry())
                 ui.verticalLayoutWidget[key].show()
             currentSize = ui.mywindow.size()
-            currentSize.setHeight(ui.initialWidth + 400 * len(ui.verticalLayoutWidget))
+            currentSize.setHeight(ui.initialWidth + ui.graphHeight * len(ui.verticalLayoutWidget))
             ui.mywindow.resize(currentSize)

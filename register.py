@@ -27,7 +27,7 @@ class Register:
     def addIndicator(indic, ui):
         print("ADD")
         currentSize = ui.mywindow.size()
-        currentSize.setHeight(currentSize.height() + 400)
+        currentSize.setHeight(ui.initialWidth + 400 * (len(ui.verticalLayoutWidget) + 1))
         ui.mywindow.resize(currentSize)
 
         ui.verticalLayoutWidget[indic] = QtWidgets.QWidget(ui.centralwidget)
@@ -68,3 +68,6 @@ class Register:
 
                 print(ui.verticalLayoutWidget[key].geometry())
                 ui.verticalLayoutWidget[key].show()
+            currentSize = ui.mywindow.size()
+            currentSize.setHeight(ui.initialWidth + 400 * len(ui.verticalLayoutWidget))
+            ui.mywindow.resize(currentSize)

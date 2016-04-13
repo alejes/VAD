@@ -31,9 +31,11 @@ import random
 
 
 class Ui_MainWindow(object):
+    initialWidth = 100
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 100)
+        MainWindow.resize(800, self.initialWidth)
         self.mywindow = MainWindow
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -88,9 +90,6 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget = {}
         self.verticalLayout = {}
         self.graphLayouts = {}
-
-
-
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

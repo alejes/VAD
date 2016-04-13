@@ -9,6 +9,10 @@ class energyIndicator(Indicator):
 
     @staticmethod
     def data_process(data):
+        sum = 0
+        for dataFrame in data:
+            sum += dataFrame * dataFrame
+        data.fill(sum)
         return data * 100
 
     pass

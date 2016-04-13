@@ -3,10 +3,10 @@ from register import *
 
 
 class energyIndicator(Indicator):
+    fixedBounds = False
     @staticmethod
     def init():
         pass
-
     @staticmethod
     def data_process(data):
         sum = 0

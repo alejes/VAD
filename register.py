@@ -22,6 +22,7 @@ class Register:
     activeIndicators = {}
     totalIndicators = {}
     position = 0
+    plotDataSize = 102400
 
     @staticmethod
     def addIndicator(indic, ui):
@@ -44,6 +45,10 @@ class Register:
         ui.graphLayouts[indic] = QVBoxLayout(ui.verticalLayoutWidget[indic])
         dc = MyDynamicMplCanvas(ui.verticalLayoutWidget[indic], width=5, height=4, dpi=100)
         dc.data_process = Register.totalIndicators.get(indic).data_process
+        dc.updateTime = Register.totalIndicators.get(indic).updateTime
+        dc.plotDataSize = Register.plotDataSize
+        dc.fixedBounds = Register.totalIndicators.get(indic).fixedBounds
+
         ui.graphLayouts[indic].addWidget(dc)
         # Register.position+=1
 

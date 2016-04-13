@@ -7,7 +7,9 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from record import *
 from details_classes import *
+import numpy
 import random
+import collections
 
 
 class MyMplCanvas(FigureCanvas):
@@ -43,14 +45,13 @@ class MyDynamicMplCanvas(MyMplCanvas):
         timer.timeout.connect(self.update_figure)
         timer.start(100)
         self._currentId = Record.getCurrentId()
+        self.data = numpy.array([])
 
     def compute_initial_figure(self):
         pass
 
     def update_figure(self):
         if Record.recordState == RecordStates.Run:
-            # Build a list of 4 random integers between 0 and 10 (both inclusive)
-            # l = [random.randint(0, 10) for i in range(4)]
             beginid = self._currentId
             newid = Record.getCurrentId()
             data = Record.getDataFromTo(self._currentId, newid)
@@ -61,11 +62,18 @@ class MyDynamicMplCanvas(MyMplCanvas):
 
             if "data_process" in self.__dict__:
                 data = self.data_process(data)
-            # print(beginid / Record.RATE)
 
-            self.axes.plot([x for x in frange(Record.CHUNK * beginid / Record.RATE, data.size, 1.0 / Record.RATE)],
-                           data, 'g')
+            self.data = numpy.concatenate((self.data, data))
+
+            plottingSize = min(self.plotDataSize, self.data.size)
+            self.axes.plot([x for x in frange(Record.CHUNK * beginid / Record.RATE, plottingSize, 1.0 / Record.RATE)],
+                           self.data[-plottingSize:], 'g')
             # self.axes.patch.set_facecolor('blue')
             # self.axes.grid(True)
-            self.axes.set_ybound(lower=-1, upper=1)
+            if "fixedBounds" not in self.__dict__ or self.fixedBounds:
+                self.axes.set_ybound(lower=-1, upper=1)
+            else:
+                self.axes.set_ybound(lower=0)
+
+
             self.draw()

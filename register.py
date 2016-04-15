@@ -16,13 +16,15 @@ from PyQt5.QtWidgets import (QMainWindow, QTextEdit, QAction, QFileDialog, QAppl
                              QSizePolicy, QMessageBox, QWidget)
 from PyQt5.QtCore import (QRect)
 from graphic import *
+from graphicManager import *
 
 
 class Register:
     activeIndicators = {}
     totalIndicators = {}
     position = 0
-    plotDataSize = 102400
+    # plotDataSize = 102400
+    graphicManager = GraphicManager()
 
     @staticmethod
     def addIndicator(indic, ui):
@@ -46,7 +48,7 @@ class Register:
         dc = MyDynamicMplCanvas(ui.verticalLayoutWidget[indic], width=5, height=4, dpi=100)
         dc.data_process = Register.totalIndicators.get(indic).data_process
         dc.updateTime = Register.totalIndicators.get(indic).updateTime
-        dc.plotDataSize = Register.plotDataSize
+        # dc.plotDataSize = Register.plotDataSize
         dc.fixedBounds = Register.totalIndicators.get(indic).fixedBounds
 
         ui.graphLayouts[indic].addWidget(dc)

@@ -166,6 +166,7 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         Record.stopRecord()
+        GraphicManager.t.cancel()
 
     def saveWaveMenuPress(self):
         fname = QFileDialog.getSaveFileName(self, 'Open file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")

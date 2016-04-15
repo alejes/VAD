@@ -10,6 +10,7 @@ from details_classes import *
 import numpy
 import random
 import collections
+import math
 
 
 class MyMplCanvas(FigureCanvas):
@@ -41,39 +42,45 @@ class MyDynamicMplCanvas(MyMplCanvas):
 
     def __init__(self, *args, **kwargs):
         MyMplCanvas.__init__(self, *args, **kwargs)
-        timer = QtCore.QTimer(self)
-        timer.timeout.connect(self.update_figure)
-        timer.start(10)
+        # timer = QtCore.QTimer(self)
+        # timer.timeout.connect(self.update_figure)
+        # timer.start(10)
         self._currentId = Record.getCurrentId()
         self.data = numpy.array([])
+        self.secondsLen = 10
 
     def compute_initial_figure(self):
         pass
 
-    def update_figure(self):
+    def data_update(self):
         if Record.recordState == RecordStates.Run:
-            beginid = self._currentId
             newid = Record.getCurrentId()
             data = Record.getDataFromTo(self._currentId, newid)
             self._currentId = newid
 
             data = b''.join(data)
             data = numpy.fromstring(data, numpy.int16) / Record.AMPLITUDE
-
             if "data_process" in self.__dict__:
                 data = self.data_process(data)
 
             self.data = numpy.concatenate((self.data, data))
 
-            plottingSize = min(self.plotDataSize, self.data.size)
-            self.axes.plot([x for x in frange(Record.CHUNK * beginid / Record.RATE, plottingSize, 1.0 / Record.RATE)],
-                           self.data[-plottingSize:], 'g')
+    def update_figure(self, currentTime):
+        if Record.recordState == RecordStates.Run:
+            self.data_update()
+            # plotStartId = self.secondsLen * Record.RATE
+            plotStartSec = max(currentTime - self.secondsLen, 0)
+
+            data = self.data[math.floor(plotStartSec * Record.RATE):math.floor(currentTime * Record.RATE)]
+
+            # plottingSize = min(self.plotDataSize, self.data.size)
+            self.axes.plot([x for x in frange(plotStartSec, data.size, 1.0 / Record.RATE)],
+                           data, 'g')
             # self.axes.patch.set_facecolor('blue')
             # self.axes.grid(True)
             if "fixedBounds" not in self.__dict__ or self.fixedBounds:
                 self.axes.set_ybound(lower=-1, upper=1)
             else:
                 self.axes.set_ybound(lower=0)
-
 
             self.draw()

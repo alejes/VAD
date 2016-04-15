@@ -4,6 +4,7 @@ import threading
 import matplotlib.pyplot as plt
 import numpy
 from details_classes import *
+import time
 
 
 class Record:
@@ -18,14 +19,24 @@ class Record:
     RATE = 8000
     CHUNK = 512
     AMPLITUDE = 2 ** 15
+    startTime = time.clock()
+    deltaTime = time.clock()
+
+    @staticmethod
+    def getTime():
+        delta = (time.clock() - Record.deltaTime)
+        return time.clock() - Record.startTime - (delta if Record.deltaTime > 0 else 0)
 
     @staticmethod
     def runRecord():
-
         if Record.recordState == RecordStates.Pause:
+            Record.startTime += time.clock() - Record.deltaTime
+            Record.deltaTime = 0
             print("Pause active")
             Record.recordState = RecordStates.Run
         else:
+            Record.startTime = time.clock()
+            Record.deltaTime = 0
             print("First start")
             Record.recordState = RecordStates.Stop
 
@@ -44,6 +55,7 @@ class Record:
 
     @staticmethod
     def pauseRecord():
+        Record.deltaTime = time.clock()
         Record.recordState = RecordStates.Pause
         Record.pauseEventRunState.clear()
 
@@ -87,7 +99,7 @@ class Record:
         print("Recording...")
 
         while Record.recordState != RecordStates.Stop:
-            #print("In Record")
+            # print("In Record")
             data = stream.read(Record.CHUNK)
             Record._frames.append(data)
             Record.pauseEventRunState.wait()

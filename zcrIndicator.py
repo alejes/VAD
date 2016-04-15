@@ -17,7 +17,8 @@ class zcrIndicator(Indicator):
             if data[i - 1] * data[i] < 0:
                 cnt += 1
 
-        data.fill(cnt)
+        if data.size > 0:
+            data.fill(cnt * 1.0 / data.size)
 
         return data
 

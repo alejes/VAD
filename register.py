@@ -35,7 +35,7 @@ class Register:
 
         ui.verticalLayoutWidget[indic] = QtWidgets.QWidget(ui.centralwidget)
         ui.verticalLayoutWidget[indic].setGeometry(
-            QtCore.QRect(10, 40 + ui.graphHeight * (len(ui.verticalLayoutWidget) - 1), 651, 381))
+            QtCore.QRect(10, 40 + ui.graphHeight * (len(ui.verticalLayoutWidget) - 1), 6510, 3810))
         ui.verticalLayoutWidget[indic].setObjectName("verticalLayoutWidget")
         ui.verticalLayout[indic] = QtWidgets.QVBoxLayout(ui.verticalLayoutWidget[indic])
         ui.verticalLayout[indic].setObjectName("verticalLayout")
@@ -57,6 +57,7 @@ class Register:
         Register.activeIndicators[indic] = dc
         ui.verticalLayoutWidget[indic].show()
         dc.show()
+        ui.mywindow.updateGraphsLocations()
 
     @staticmethod
     def removeIndicator(indic, ui):

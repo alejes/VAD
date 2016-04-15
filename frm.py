@@ -92,6 +92,13 @@ class Ui_MainWindow(object):
         self.verticalLayout = {}
         self.graphLayouts = {}
 
+        # l = QVBoxLayout(self.centralwidget)
+        # dc = MyDynamicMplCanvas(self.centralwidget, width=5, height=4, dpi=100)
+        # l.addWidget(sc)
+        # l.addWidget(dc)
+        ##l.addWidget(dc)
+
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -167,6 +174,23 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def closeEvent(self, event):
         Record.stopRecord()
         GraphicManager.t.cancel()
+
+    def updateGraphsLocations(self):
+        currentSize = self._ui.mywindow.size()
+
+        print("resize " + str(time.time()))
+        singleHeight = math.floor(
+            (currentSize.height() - 40) / len(Register.activeIndicators))
+        id = 0
+        for widgetKey in Register.activeIndicators:
+            Register.activeIndicators[widgetKey].resize(currentSize.width(), singleHeight - 50)
+            self._ui.verticalLayoutWidget[widgetKey].setGeometry(
+                QtCore.QRect(10, 40 + singleHeight * id, 6510, 3810))
+            id += 1
+
+    def resizeEvent(self, resizeEvent):
+        self.updateGraphsLocations()
+
 
     def saveWaveMenuPress(self):
         fname = QFileDialog.getSaveFileName(self, 'Open file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")

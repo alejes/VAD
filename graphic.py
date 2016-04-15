@@ -17,7 +17,7 @@ class MyMplCanvas(FigureCanvas):
     """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), facecolor='none', dpi=dpi)
+        fig = Figure(facecolor='none', dpi=dpi)
         self.axes = fig.add_subplot(111)
         self.axes.set_ybound(lower=-1, upper=1)
         # We want the axes cleared every time plot() is called
@@ -32,6 +32,7 @@ class MyMplCanvas(FigureCanvas):
                                    QSizePolicy.Expanding,
                                    QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
+        self.resize(1000, 200)
 
     def compute_initial_figure(self):
         pass

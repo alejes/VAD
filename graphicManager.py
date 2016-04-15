@@ -30,7 +30,7 @@ class GraphicManager:
 
     def manager(self):
         # print("manager tick")
-        print(Record.getTime())
+        # print(Record.getTime())
         currentTime = Record.getTime()
         try:
             for ind in reg.Register.activeIndicators.values():

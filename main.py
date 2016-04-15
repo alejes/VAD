@@ -9,7 +9,7 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = ApplicationWindow()
     ui = Ui_MainWindow()
-
+    MainWindow._ui = ui
     ui.setupUi(MainWindow)
     ui.ui_prepare()
     MainWindow.show()

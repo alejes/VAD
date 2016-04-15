@@ -31,7 +31,7 @@ import random
 
 
 class Ui_MainWindow(object):
-    initialWidth = 100
+    initialWidth = 500
     graphHeight = 400
 
     def setupUi(self, MainWindow):
@@ -97,7 +97,6 @@ class Ui_MainWindow(object):
         # l.addWidget(sc)
         # l.addWidget(dc)
         ##l.addWidget(dc)
-
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -170,6 +169,8 @@ class Ui_MainWindow(object):
 class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
+        self.setMinimumHeight(200)
+        self.setMinimumWidth(523)
 
     def closeEvent(self, event):
         Record.stopRecord()
@@ -189,8 +190,8 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             id += 1
 
     def resizeEvent(self, resizeEvent):
+        # print(resizeEvent.size())
         self.updateGraphsLocations()
-
 
     def saveWaveMenuPress(self):
         fname = QFileDialog.getSaveFileName(self, 'Open file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")

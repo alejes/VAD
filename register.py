@@ -23,15 +23,14 @@ class Register:
     activeIndicators = {}
     totalIndicators = {}
     position = 0
-    # plotDataSize = 102400
     graphicManager = GraphicManager()
 
     @staticmethod
     def addIndicator(indic, ui):
         print("ADD")
-        currentSize = ui.mywindow.size()
-        currentSize.setHeight(ui.initialWidth + ui.graphHeight * (len(ui.verticalLayoutWidget) + 1))
-        ui.mywindow.resize(currentSize)
+        # currentSize = ui.mywindow.size()
+        # currentSize.setHeight(ui.initialWidth + ui.graphHeight * (len(ui.verticalLayoutWidget) + 1))
+        # ui.mywindow.resize(currentSize)
 
         ui.verticalLayoutWidget[indic] = QtWidgets.QWidget(ui.centralwidget)
         ui.verticalLayoutWidget[indic].setGeometry(
@@ -48,11 +47,9 @@ class Register:
         dc = MyDynamicMplCanvas(ui.verticalLayoutWidget[indic], width=5, height=4, dpi=100)
         dc.data_process = Register.totalIndicators.get(indic).data_process
         dc.updateTime = Register.totalIndicators.get(indic).updateTime
-        # dc.plotDataSize = Register.plotDataSize
         dc.fixedBounds = Register.totalIndicators.get(indic).fixedBounds
 
         ui.graphLayouts[indic].addWidget(dc)
-        # Register.position+=1
 
         Register.activeIndicators[indic] = dc
         ui.verticalLayoutWidget[indic].show()
@@ -63,19 +60,6 @@ class Register:
     def removeIndicator(indic, ui):
         gt = Register.activeIndicators.pop(indic, None)
         if gt is not None:
-            botWidth = ui.verticalLayoutWidget[indic].geometry().bottomLeft().y()
             ui.verticalLayoutWidget[indic].setParent(None)
             ui.verticalLayoutWidget.pop(indic)
-            for key in ui.verticalLayoutWidget.keys():
-                print(ui.verticalLayoutWidget[key].geometry())
-                currentRect = ui.verticalLayoutWidget[key].geometry().getRect()
-
-                if currentRect[1] > botWidth:
-                    currentRect = QRect(currentRect[0], currentRect[1] - ui.graphHeight, currentRect[2], currentRect[3])
-                    ui.verticalLayoutWidget[key].setGeometry(currentRect)
-
-                print(ui.verticalLayoutWidget[key].geometry())
-                ui.verticalLayoutWidget[key].show()
-            currentSize = ui.mywindow.size()
-            currentSize.setHeight(ui.initialWidth + ui.graphHeight * len(ui.verticalLayoutWidget))
-            ui.mywindow.resize(currentSize)
+        ui.mywindow.updateGraphsLocations()

@@ -3,7 +3,9 @@ from register import *
 
 
 class energyIndicator(Indicator):
-    fixedBounds = False
+    fixedBounds = True
+    boundMin = 0
+    boundMax = 5
     @staticmethod
     def init():
         pass
@@ -12,7 +14,7 @@ class energyIndicator(Indicator):
         sum = 0
         for dataFrame in data:
             sum += dataFrame * dataFrame
-        data.fill(sum)
+        data.fill(math.sqrt(sum))
         return data
 
     pass

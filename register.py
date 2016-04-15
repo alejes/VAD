@@ -45,9 +45,16 @@ class Register:
             ui.graphLayouts.removeWidget(gt)
         ui.graphLayouts[indic] = QVBoxLayout(ui.verticalLayoutWidget[indic])
         dc = MyDynamicMplCanvas(ui.verticalLayoutWidget[indic], width=5, height=4, dpi=100)
-        dc.data_process = Register.totalIndicators.get(indic).data_process
-        dc.updateTime = Register.totalIndicators.get(indic).updateTime
-        dc.fixedBounds = Register.totalIndicators.get(indic).fixedBounds
+
+        currentTotalIndic = Register.totalIndicators.get(indic)
+
+        dc.data_process = currentTotalIndic.data_process
+        dc.updateTime = currentTotalIndic.updateTime
+        dc.fixedBounds = currentTotalIndic.fixedBounds
+        if "boundMin" in currentTotalIndic.__dict__:
+            dc.boundMin = currentTotalIndic.boundMin
+        if "boundMax" in currentTotalIndic.__dict__:
+            dc.boundMax = currentTotalIndic.boundMax
 
         ui.graphLayouts[indic].addWidget(dc)
 

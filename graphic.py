@@ -80,7 +80,10 @@ class MyDynamicMplCanvas(MyMplCanvas):
             # self.axes.patch.set_facecolor('blue')
             # self.axes.grid(True)
             if "fixedBounds" not in self.__dict__ or self.fixedBounds:
-                self.axes.set_ybound(lower=-1, upper=1)
+                if "boundMax" in self.__dict__:
+                    self.axes.set_ybound(lower=self.boundMin, upper=self.boundMax)
+                else:
+                    self.axes.set_ybound(lower=-1, upper=1)
             else:
                 self.axes.set_ybound(lower=0)
 

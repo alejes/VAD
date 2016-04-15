@@ -3,6 +3,8 @@ from register import *
 
 
 class waveIndicator(Indicator):
+    boundMin = -1
+    boundMax = 1
     @staticmethod
     def init():
         pass

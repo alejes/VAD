@@ -43,7 +43,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
         MyMplCanvas.__init__(self, *args, **kwargs)
         timer = QtCore.QTimer(self)
         timer.timeout.connect(self.update_figure)
-        timer.start(100)
+        timer.start(10)
         self._currentId = Record.getCurrentId()
         self.data = numpy.array([])
 

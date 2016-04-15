@@ -15,8 +15,8 @@ class Record:
     pauseEventRunState = threading.Event()
     # записываемые данные
     _frames = []
-    RATE = 44100
-    CHUNK = 1024
+    RATE = 8000
+    CHUNK = 512
     AMPLITUDE = 2 ** 15
 
     @staticmethod

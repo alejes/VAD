@@ -19,6 +19,7 @@ from PyQt5.QtGui import QIcon
 from record import *
 from graphic import *
 import shutil
+import os.path
 from gridWidget import *
 from register import *
 from indicators import *
@@ -121,11 +122,14 @@ class Ui_MainWindow(object):
         self.pushButtonStop.clicked.connect(self.stopButtonPress)
         self.pushButtonPause.clicked.connect(self.pauseButtonPress)
         self.actionSave_wave.triggered.connect(self.mywindow.saveWaveMenuPress)
+        self.actionOpen_wave.triggered.connect(self.mywindow.openWaveMenuPress)
+        self.actionClose_wave.triggered.connect(self.mywindow.closeWaveMenuPress)
         self.actionExit.triggered.connect(sys.exit)
         self.checkBoxWave.clicked.connect(self.waveCheckBoxPress)
         self.checkBoxEnergy.clicked.connect(self.energyCheckBoxPress)
         self.checkBoxZCR.clicked.connect(self.zcrCheckBoxPress)
         Register.addIndicator(Indicators.Wave, self)
+        Record.ui = self
 
     def waveCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
@@ -174,6 +178,7 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         Record.stopRecord()
+        Register.Truncate(self)
         GraphicManager.t.cancel()
 
     def updateGraphsLocations(self):
@@ -194,6 +199,18 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.updateGraphsLocations()
 
     def saveWaveMenuPress(self):
-        fname = QFileDialog.getSaveFileName(self, 'Open file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")
+        fname = QFileDialog.getSaveFileName(self, 'Save file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")
         if fname[0]:
             shutil.copyfile(QtCore.QDir.currentPath() + '/output.wav', fname[0])
+
+    def openWaveMenuPress(self):
+        fname = QFileDialog.getOpenFileName(self, 'Open file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")
+        if fname[0]:
+            if os.path.isfile(fname[0]):
+                Record.stopRecord()
+                Record.source = fname[0]
+
+    def closeWaveMenuPress(self):
+        Record.source = None
+        Record.stopRecord()
+        Register.Truncate(self)

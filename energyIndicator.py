@@ -5,10 +5,12 @@ from register import *
 class energyIndicator(Indicator):
     fixedBounds = True
     boundMin = 0
-    boundMax = 5
+    boundMax = 50
+
     @staticmethod
     def init():
         pass
+
     @staticmethod
     def data_process(data):
         sum = 0

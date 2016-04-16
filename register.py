@@ -70,3 +70,10 @@ class Register:
             ui.verticalLayoutWidget[indic].setParent(None)
             ui.verticalLayoutWidget.pop(indic)
         ui.mywindow.updateGraphsLocations()
+
+    @staticmethod
+    def Truncate(ui):
+        Record.Truncate(ui)
+        for graphs in Register.activeIndicators.values():
+            graphs._currentId = 0
+            graphs.data = numpy.array([])

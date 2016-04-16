@@ -21,6 +21,8 @@ class Record:
     AMPLITUDE = 2 ** 15
     startTime = time.clock()
     deltaTime = time.clock()
+    source = None
+    ui = None
 
     @staticmethod
     def getTime():
@@ -44,7 +46,10 @@ class Record:
                 Record.recordThread.join()
 
             Record.recordState = RecordStates.Run
-            Record.recordThread = threading.Thread(target=Record.Record)
+            if Record.source is None:
+                Record.recordThread = threading.Thread(target=Record.Record)
+            else:
+                Record.recordThread = threading.Thread(target=Record.Play)
             Record.recordThread.start()
         Record.pauseEventRunState.set()
 
@@ -63,13 +68,21 @@ class Record:
     def getDataFromLen(startPosition, length):
         startPosition = min(startPosition, len(Record._frames))
         finishPosition = min(startPosition + length, len(Record._frames))
-        return Record._frames[startPosition:finishPosition]
+
+        if startPosition > finishPosition:
+            return []
+        else:
+            return Record._frames[startPosition:finishPosition]
 
     @staticmethod
     def getDataFromTo(startPosition, finishPosition):
         startPosition = min(startPosition, len(Record._frames))
         finishPosition = min(finishPosition, len(Record._frames))
-        return Record._frames[startPosition:finishPosition]
+        
+        if startPosition > finishPosition:
+            return []
+        else:
+            return Record._frames[startPosition:finishPosition]
 
     @staticmethod
     def getAllDataFrom(startPosition):
@@ -81,7 +94,14 @@ class Record:
         return len(Record._frames)
 
     @staticmethod
+    def Truncate(ui):
+        Record._frames = []
+
+    @staticmethod
     def Record():
+        Record.RATE = 8000
+        Record.CHUNK = 512
+        Record.AMPLITUDE = 2 ** 15
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
 
@@ -117,10 +137,36 @@ class Record:
         wf.writeframes(b''.join(Record._frames))
         wf.close()
 
-        frames = b''.join(Record._frames)
+        Record._frames = []
 
-        fig = plt.figure()
-        s = fig.add_subplot(111)
-        amplitude = numpy.fromstring(frames, numpy.int16)
-        s.plot(amplitude)
-        fig.savefig('t.png')
+    @staticmethod
+    def Play():
+        Record.CHUNK = 512
+        wf = wave.open(Record.source, 'rb')
+
+        p = pyaudio.PyAudio()
+
+        stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                        channels=wf.getnchannels(),
+                        rate=wf.getframerate(),
+                        output=True)
+
+        print("Playing...")
+
+        Record.pauseEventRunState.wait()
+        while Record.recordState != RecordStates.Stop:
+            data = wf.readframes(Record.CHUNK)
+            stream.write(data)
+            if len(data) > 0:
+                Record._frames.append(data)
+            else:
+                Record.ui.stopButtonPress()
+            Record.pauseEventRunState.wait()
+
+        print("Done recording.")
+
+        stream.stop_stream()
+        stream.close()
+        p.terminate()
+        Record._frames = []
+        Record.stopRecord()

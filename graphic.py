@@ -60,7 +60,10 @@ class MyDynamicMplCanvas(MyMplCanvas):
             self._currentId = newid
 
             data = b''.join(data)
-            data = numpy.fromstring(data, numpy.int16) / Record.AMPLITUDE
+            try:
+                data = numpy.fromstring(data, numpy.int16) / Record.AMPLITUDE
+            except:
+                data = numpy.array([])
             if "data_process" in self.__dict__:
                 data = self.data_process(data)
 

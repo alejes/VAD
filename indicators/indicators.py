@@ -11,3 +11,7 @@ class Indicator:
     updateTime = 10
     fixedBounds = True
     pass
+
+
+class IndicatorsList:
+    list = {}

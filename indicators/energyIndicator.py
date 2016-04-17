@@ -1,5 +1,6 @@
 from indicators import *
 from register import *
+import math
 
 
 class energyIndicator(Indicator):
@@ -24,4 +25,4 @@ class energyIndicator(Indicator):
 
 class energyIndicator_details:
     print("energy indicator loaded")
-    Register.totalIndicators[Indicators.Energy] = energyIndicator
+    IndicatorsList.list[Indicators.Energy] = energyIndicator

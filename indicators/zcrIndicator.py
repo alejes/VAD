@@ -25,4 +25,4 @@ class zcrIndicator(Indicator):
 
 class waveIndicator_details:
     print("zcr indicator loaded")
-    Register.totalIndicators[Indicators.ZCR] = zcrIndicator
+    IndicatorsList.list[Indicators.ZCR] = zcrIndicator

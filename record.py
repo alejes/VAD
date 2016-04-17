@@ -78,7 +78,7 @@ class Record:
     def getDataFromTo(startPosition, finishPosition):
         startPosition = min(startPosition, len(Record._frames))
         finishPosition = min(finishPosition, len(Record._frames))
-        
+
         if startPosition > finishPosition:
             return []
         else:

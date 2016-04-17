@@ -17,11 +17,12 @@ from PyQt5.QtWidgets import (QMainWindow, QTextEdit, QAction, QFileDialog, QAppl
 from PyQt5.QtCore import (QRect)
 from graphic import *
 from graphicManager import *
+import inspect
 
 
 class Register:
     activeIndicators = {}
-    totalIndicators = {}
+    totalIndicators = IndicatorsList.list
     position = 0
     graphicManager = GraphicManager()
 

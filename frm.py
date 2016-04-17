@@ -20,10 +20,8 @@ from record import *
 from graphic import *
 import shutil
 import os.path
-from gridWidget import *
 from register import *
 from indicators import *
-from imprt import *
 import random
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -184,7 +182,7 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def updateGraphsLocations(self):
         currentSize = self._ui.mywindow.size()
 
-        print("resize " + str(time.time()))
+        # print("resize " + str(time.time()))
         singleHeight = math.floor(
             (currentSize.height() - 40) / len(Register.activeIndicators))
         id = 0

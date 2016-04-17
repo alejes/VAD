@@ -55,8 +55,11 @@ class Ui_MainWindow(object):
         self.checkBoxEnergy.setGeometry(QtCore.QRect(350, 10, 70, 17))
         self.checkBoxEnergy.setObjectName("checkBoxEnergy")
         self.checkBoxZCR = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBoxZCR.setGeometry(QtCore.QRect(430, 10, 70, 17))
+        self.checkBoxZCR.setGeometry(QtCore.QRect(410, 10, 70, 17))
         self.checkBoxZCR.setObjectName("checkBoxZCR")
+        self.checkBoxMFCC = QtWidgets.QCheckBox(self.centralwidget)
+        self.checkBoxMFCC.setGeometry(QtCore.QRect(470, 10, 70, 17))
+        self.checkBoxMFCC.setObjectName("checkBoxMFCC")
         self.pushButtonPause = QtWidgets.QPushButton(self.centralwidget)
         self.pushButtonPause.setEnabled(False)
         self.pushButtonPause.setGeometry(QtCore.QRect(100, 10, 75, 23))
@@ -108,6 +111,7 @@ class Ui_MainWindow(object):
         self.checkBoxWave.setText(_translate("MainWindow", "Wave"))
         self.checkBoxEnergy.setText(_translate("MainWindow", "Energy"))
         self.checkBoxZCR.setText(_translate("MainWindow", "ZCR"))
+        self.checkBoxMFCC.setText(_translate("MainWindow", "MFCC"))
         self.pushButtonPause.setText(_translate("MainWindow", "Pause"))
         self.menuW2w2.setTitle(_translate("MainWindow", "Menu"))
         self.actionOpen_wave.setText(_translate("MainWindow", "Open wave"))
@@ -126,6 +130,7 @@ class Ui_MainWindow(object):
         self.checkBoxWave.clicked.connect(self.waveCheckBoxPress)
         self.checkBoxEnergy.clicked.connect(self.energyCheckBoxPress)
         self.checkBoxZCR.clicked.connect(self.zcrCheckBoxPress)
+        self.checkBoxMFCC.clicked.connect(self.mfccCheckBoxPress)
         Register.addIndicator(Indicators.Wave, self)
         Record.ui = self
 
@@ -146,6 +151,12 @@ class Ui_MainWindow(object):
             Register.addIndicator(Indicators.ZCR, self)
         else:
             Register.removeIndicator(Indicators.ZCR, self)
+
+    def mfccCheckBoxPress(self):
+        if self.checkBoxMFCC.isChecked():
+            Register.addIndicator(Indicators.MFCC, self)
+        else:
+            Register.removeIndicator(Indicators.MFCC, self)
 
     def startButtonPress(self):
         self.pushButtonStop.setEnabled(True)
@@ -183,8 +194,11 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         currentSize = self._ui.mywindow.size()
 
         # print("resize " + str(time.time()))
-        singleHeight = math.floor(
-            (currentSize.height() - 40) / len(Register.activeIndicators))
+
+        if len(Register.activeIndicators) > 0:
+            singleHeight = math.floor(
+                (currentSize.height() - 40) / len(Register.activeIndicators))
+        
         id = 0
         for widgetKey in Register.activeIndicators:
             Register.activeIndicators[widgetKey].resize(currentSize.width(), singleHeight - 50)

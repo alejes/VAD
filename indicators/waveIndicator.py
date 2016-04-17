@@ -1,8 +1,4 @@
 from indicators.indicators import *
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join('..')))
-print(os.path.join(os.getcwd(), r'register.py'))
 from register import *
 
 

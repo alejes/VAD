@@ -5,6 +5,7 @@ class Indicators(Enum):
     Wave = 0
     Energy = 1
     ZCR = 2
+    MFCC = 3
 
 
 class Indicator:

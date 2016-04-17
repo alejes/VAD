@@ -213,6 +213,7 @@ ModelManifest.xml
 
 
 __pycache__/*
+*/__pycache__/*
 .idea/*
 *.mp3
 *.wav

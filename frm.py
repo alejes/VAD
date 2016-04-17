@@ -198,7 +198,7 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if len(Register.activeIndicators) > 0:
             singleHeight = math.floor(
                 (currentSize.height() - 40) / len(Register.activeIndicators))
-        
+
         id = 0
         for widgetKey in Register.activeIndicators:
             Register.activeIndicators[widgetKey].resize(currentSize.width(), singleHeight - 50)

@@ -123,8 +123,8 @@ def get_filterbanks(nfilt=20, nfft=512, samplerate=16000, lowfreq=0, highfreq=No
 
 
 class mfccIndicator(Indicator):
-    boundMin = -1
-    boundMax = 1
+    boundMin = -100
+    boundMax = 100
 
     @staticmethod
     def init():

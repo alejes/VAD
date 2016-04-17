@@ -65,7 +65,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
             except:
                 data = numpy.array([])
             if "data_process" in self.__dict__:
-                data = self.data_process(data)
+                data = self.data_process(data).flatten()
 
             self.data = numpy.concatenate((self.data, data))
 

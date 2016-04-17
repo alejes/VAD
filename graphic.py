@@ -77,8 +77,13 @@ class MyDynamicMplCanvas(MyMplCanvas):
 
             data = self.data[math.floor(plotStartSec * Record.RATE):math.floor(currentTime * Record.RATE)]
 
+            if data.size > 0:
+                delta = (currentTime - plotStartSec)* 1.0 / data.size
+            else:
+                delta = 1
+
             # plottingSize = min(self.plotDataSize, self.data.size)
-            self.axes.plot([x for x in frange(plotStartSec, data.size, 1.0 / Record.RATE)],
+            self.axes.plot([x for x in frange(plotStartSec, data.size, delta)],
                            data, 'g')
             # self.axes.patch.set_facecolor('blue')
             # self.axes.grid(True)

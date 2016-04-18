@@ -49,6 +49,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
         self._currentId = Record.getCurrentId()
         self.data = numpy.array([])
         self.secondsLen = 10
+        self.dataSpeed = 1
 
     def compute_initial_figure(self):
         pass
@@ -65,7 +66,10 @@ class MyDynamicMplCanvas(MyMplCanvas):
             except:
                 data = numpy.array([])
             if "data_process" in self.__dict__:
+                originalSize = data.size
                 data = self.data_process(data).flatten()
+                if data.size > 0 and originalSize > 0:
+                    self.dataSpeed = originalSize / data.size
 
             self.data = numpy.concatenate((self.data, data))
 
@@ -74,11 +78,14 @@ class MyDynamicMplCanvas(MyMplCanvas):
             self.data_update()
             # plotStartId = self.secondsLen * Record.RATE
             plotStartSec = max(currentTime - self.secondsLen, 0)
+            #print(str(math.floor(plotStartSec * Record.RATE / self.dataSpeed)) + ":" + str(
+             #   math.floor(currentTime * Record.RATE / self.dataSpeed)))
 
-            data = self.data[math.floor(plotStartSec * Record.RATE):math.floor(currentTime * Record.RATE)]
+            data = self.data[math.floor(plotStartSec * Record.RATE / self.dataSpeed):math.floor(
+                currentTime * Record.RATE / self.dataSpeed)]
 
             if data.size > 0:
-                delta = (currentTime - plotStartSec)* 1.0 / data.size
+                delta = (currentTime - plotStartSec) * 1.0 / data.size
             else:
                 delta = 1
 

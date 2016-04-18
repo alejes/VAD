@@ -133,7 +133,7 @@ class mfccIndicator(Indicator):
     @staticmethod
     def data_process(data):
         #print(data - mfcc(data, Record.RATE))
-        print("mfcc")
+        print("mfcc" + str(len(data)))
         return mfcc(data, 8000)
 
     pass

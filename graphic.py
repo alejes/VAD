@@ -76,7 +76,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
     def update_figure(self, currentTime):
         if Record.recordState == RecordStates.Run:
             # plotStartId = self.secondsLen * Record.RATE
-            plotStartSec = max(currentTime - self.secondsLen, 0)
+            plotStartSec = math.floor(max(currentTime - self.secondsLen, 0) / 2) * 2
 
             # print(str(math.floor(plotStartSec * Record.RATE / self.dataSpeed)) + ":" + str(
             #   math.floor(currentTime * Record.RATE / self.dataSpeed)))
@@ -91,7 +91,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
 
             # print("plotStartSec = " + str(plotStartSec)  + " Record.RATE="  +str(Record.RATE) + "  self.dataSpeed=" + str(self.dataSpeed) + " currentTime =" + str(currentTime ) + " delta = " + str(delta) )
             # print(data)
-
+            # print(self.axes.transAxes)
             # plottingSize = min(self.plotDataSize, self.data.size)
             self.axes.plot([x for x in frange(plotStartSec, data.size, delta)],
                            data, 'g')

@@ -78,8 +78,8 @@ class MyDynamicMplCanvas(MyMplCanvas):
             self.data_update()
             # plotStartId = self.secondsLen * Record.RATE
             plotStartSec = max(currentTime - self.secondsLen, 0)
-            #print(str(math.floor(plotStartSec * Record.RATE / self.dataSpeed)) + ":" + str(
-             #   math.floor(currentTime * Record.RATE / self.dataSpeed)))
+            # print(str(math.floor(plotStartSec * Record.RATE / self.dataSpeed)) + ":" + str(
+            #   math.floor(currentTime * Record.RATE / self.dataSpeed)))
 
             data = self.data[math.floor(plotStartSec * Record.RATE / self.dataSpeed):math.floor(
                 currentTime * Record.RATE / self.dataSpeed)]
@@ -102,4 +102,5 @@ class MyDynamicMplCanvas(MyMplCanvas):
             else:
                 self.axes.set_ybound(lower=0)
 
-            self.draw()
+    def release_figure(self):
+        self.draw()

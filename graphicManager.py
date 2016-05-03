@@ -35,6 +35,8 @@ class GraphicManager:
         try:
             for ind in reg.Register.activeIndicators.values():
                 ind.update_figure(currentTime)
+            for ind in reg.Register.activeIndicators.values():
+                ind.release_figure()
         except RuntimeError:
             # dictionary changed size
             pass

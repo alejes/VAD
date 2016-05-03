@@ -27,7 +27,7 @@ class Register:
     graphicManager = GraphicManager()
 
     @staticmethod
-    def addIndicator(indic, ui):
+    def addIndicator(indic, ui, active):
         print("ADD")
         # currentSize = ui.mywindow.size()
         # currentSize.setHeight(ui.initialWidth + ui.graphHeight * (len(ui.verticalLayoutWidget) + 1))
@@ -57,19 +57,43 @@ class Register:
         if "boundMax" in currentTotalIndic.__dict__:
             dc.boundMax = currentTotalIndic.boundMax
 
+        dc.active = active
+        dc.setVisible(active)
         ui.graphLayouts[indic].addWidget(dc)
 
         Register.activeIndicators[indic] = dc
         ui.verticalLayoutWidget[indic].show()
-        dc.show()
+        if active:
+            dc.show()
         ui.mywindow.updateGraphsLocations()
 
     @staticmethod
     def removeIndicator(indic, ui):
-        gt = Register.activeIndicators.pop(indic, None)
-        if gt is not None:
-            ui.verticalLayoutWidget[indic].setParent(None)
-            ui.verticalLayoutWidget.pop(indic)
+        curInd = Register.activeIndicators.get(indic)
+        curInd.active = False
+        curInd.setVisible(False)
+        Register.activeIndicators[indic] = curInd
+        ui.mywindow.updateGraphsLocations()
+
+    # gt = Register.activeIndicators.pop(indic, None)
+    # if gt is not None:
+    #            ui.verticalLayoutWidget[indic].setParent(None)
+    # ui.verticalLayoutWidget.pop(indic)
+
+    @staticmethod
+    def switchOff(indic, ui):
+        curInd = Register.activeIndicators.get(indic)
+        curInd.active = False
+        curInd.setVisible(False)
+        Register.activeIndicators[indic] = curInd
+        ui.mywindow.updateGraphsLocations()
+
+    @staticmethod
+    def switchOn(indic, ui):
+        curInd = Register.activeIndicators.get(indic)
+        curInd.active = True
+        curInd.setVisible(True)
+        Register.activeIndicators[indic] = curInd
         ui.mywindow.updateGraphsLocations()
 
     @staticmethod

@@ -70,14 +70,14 @@ class MyDynamicMplCanvas(MyMplCanvas):
                 data = self.data_process(data).flatten()
                 if data.size > 0 and originalSize > 0:
                     self.dataSpeed = originalSize / data.size
-
+            # print("concat: " + str(self.data.size) + " size=" + str(data.size))
             self.data = numpy.concatenate((self.data, data))
 
     def update_figure(self, currentTime):
         if Record.recordState == RecordStates.Run:
-            self.data_update()
             # plotStartId = self.secondsLen * Record.RATE
             plotStartSec = max(currentTime - self.secondsLen, 0)
+
             # print(str(math.floor(plotStartSec * Record.RATE / self.dataSpeed)) + ":" + str(
             #   math.floor(currentTime * Record.RATE / self.dataSpeed)))
 
@@ -88,6 +88,9 @@ class MyDynamicMplCanvas(MyMplCanvas):
                 delta = (currentTime - plotStartSec) * 1.0 / data.size
             else:
                 delta = 1
+
+            # print("plotStartSec = " + str(plotStartSec)  + " Record.RATE="  +str(Record.RATE) + "  self.dataSpeed=" + str(self.dataSpeed) + " currentTime =" + str(currentTime ) + " delta = " + str(delta) )
+            # print(data)
 
             # plottingSize = min(self.plotDataSize, self.data.size)
             self.axes.plot([x for x in frange(plotStartSec, data.size, delta)],

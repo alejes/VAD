@@ -116,4 +116,4 @@ def preemphasis(signal, coeff=0.95):
     :returns: the filtered signal.
     """
     return signal
-    #return numpy.append(signal[0], signal[1:] - coeff * signal[:-1])
+    # return numpy.append(signal[0], signal[1:] - coeff * signal[:-1])

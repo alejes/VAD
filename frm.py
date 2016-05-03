@@ -131,32 +131,36 @@ class Ui_MainWindow(object):
         self.checkBoxEnergy.clicked.connect(self.energyCheckBoxPress)
         self.checkBoxZCR.clicked.connect(self.zcrCheckBoxPress)
         self.checkBoxMFCC.clicked.connect(self.mfccCheckBoxPress)
-        Register.addIndicator(Indicators.Wave, self)
+
+        Register.addIndicator(Indicators.Wave, self, True)
+        Register.addIndicator(Indicators.MFCC, self, False)
+        Register.addIndicator(Indicators.Energy, self, False)
+        Register.addIndicator(Indicators.ZCR, self, False)
         Record.ui = self
 
     def waveCheckBoxPress(self):
         if self.checkBoxWave.isChecked():
-            Register.addIndicator(Indicators.Wave, self)
+            Register.switchOn(Indicators.Wave, self)
         else:
-            Register.removeIndicator(Indicators.Wave, self)
+            Register.switchOff(Indicators.Wave, self)
 
     def energyCheckBoxPress(self):
         if self.checkBoxEnergy.isChecked():
-            Register.addIndicator(Indicators.Energy, self)
+            Register.switchOn(Indicators.Energy, self)
         else:
-            Register.removeIndicator(Indicators.Energy, self)
+            Register.switchOff(Indicators.Energy, self)
 
     def zcrCheckBoxPress(self):
         if self.checkBoxZCR.isChecked():
-            Register.addIndicator(Indicators.ZCR, self)
+            Register.switchOn(Indicators.ZCR, self)
         else:
-            Register.removeIndicator(Indicators.ZCR, self)
+            Register.switchOff(Indicators.ZCR, self)
 
     def mfccCheckBoxPress(self):
         if self.checkBoxMFCC.isChecked():
-            Register.addIndicator(Indicators.MFCC, self)
+            Register.switchOn(Indicators.MFCC, self)
         else:
-            Register.removeIndicator(Indicators.MFCC, self)
+            Register.switchOff(Indicators.MFCC, self)
 
     def startButtonPress(self):
         self.pushButtonStop.setEnabled(True)
@@ -194,17 +198,22 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         currentSize = self._ui.mywindow.size()
 
         # print("resize " + str(time.time()))
+        cntActive = 0
+        for widgetKey in Register.activeIndicators:
+            if Register.activeIndicators[widgetKey].active:
+                cntActive += 1
 
-        if len(Register.activeIndicators) > 0:
+        if cntActive > 0:
             singleHeight = math.floor(
-                (currentSize.height() - 40) / len(Register.activeIndicators))
+                (currentSize.height() - 40) / cntActive)
 
         id = 0
         for widgetKey in Register.activeIndicators:
-            Register.activeIndicators[widgetKey].resize(currentSize.width(), singleHeight - 50)
-            self._ui.verticalLayoutWidget[widgetKey].setGeometry(
-                QtCore.QRect(10, 40 + singleHeight * id, 6510, 3810))
-            id += 1
+            if Register.activeIndicators[widgetKey].active:
+                Register.activeIndicators[widgetKey].resize(currentSize.width(), singleHeight - 50)
+                self._ui.verticalLayoutWidget[widgetKey].setGeometry(
+                    QtCore.QRect(10, 40 + singleHeight * id, 6510, 3810))
+                id += 1
 
     def resizeEvent(self, resizeEvent):
         # print(resizeEvent.size())

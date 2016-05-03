@@ -24,7 +24,6 @@ class energyIndicator(Indicator):
 
         currentMaxEnergy = max(1, max(energyIndicator.maxEnergy))
 
-        print(str(math.sqrt(sum) / currentMaxEnergy) + "  " + str(currentMaxEnergy))
         if currentMaxEnergy > 0:
             data.fill(math.sqrt(sum) / currentMaxEnergy)
         else:
@@ -32,6 +31,7 @@ class energyIndicator(Indicator):
 
         return data
 
+    data_process.name = "energy"
     pass
 
 

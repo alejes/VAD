@@ -54,6 +54,7 @@ class Register:
         dc.fixedBounds = currentTotalIndic.fixedBounds
         dc.getVoiceStatus = currentTotalIndic.getVoiceStatus
         dc.getName = currentTotalIndic.getName
+        dc.activeIndicators = Register.activeIndicators
         if "boundMin" in currentTotalIndic.__dict__:
             dc.boundMin = currentTotalIndic.boundMin
         if "boundMax" in currentTotalIndic.__dict__:

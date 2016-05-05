@@ -16,6 +16,7 @@ class Record:
     pauseEventRunState = threading.Event()
     # записываемые данные
     _frames = []
+    _clear_frames = []
     RATE = 8000
     CHUNK = 512
     AMPLITUDE = 2 ** 15
@@ -23,6 +24,7 @@ class Record:
     deltaTime = time.clock()
     source = None
     ui = None
+    VADstatus = False
 
     @staticmethod
     def getTime():
@@ -107,6 +109,7 @@ class Record:
 
         # RECORD_SECONDS = 5
         WAVE_OUTPUT_FILENAME = "output.wav"
+        WAVE_CLEAR_OUTPUT_FILENAME = "clear_output.wav"
 
         p = pyaudio.PyAudio()
 
@@ -135,6 +138,14 @@ class Record:
         wf.setsampwidth(p.get_sample_size(FORMAT))
         wf.setframerate(Record.RATE)
         wf.writeframes(b''.join(Record._frames))
+        wf.close()
+
+
+        wf = wave.open(WAVE_CLEAR_OUTPUT_FILENAME, 'wb')
+        wf.setnchannels(CHANNELS)
+        wf.setsampwidth(p.get_sample_size(FORMAT))
+        wf.setframerate(Record.RATE)
+        wf.writeframes(b''.join(Record._clear_frames))
         wf.close()
 
         Record._frames = []

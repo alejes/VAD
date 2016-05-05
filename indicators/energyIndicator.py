@@ -47,7 +47,7 @@ class energyIndicator(Indicator):
         else:
             data.fill(math.sqrt(sum))
 
-        haveVoice = energyIndicator.isVoice
+        energyIndicator.isVoice = haveVoice
         return data
 
     pass

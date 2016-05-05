@@ -105,7 +105,9 @@ class MyDynamicMplCanvas(MyMplCanvas):
             # print(self.axes.transAxes)
             # plottingSize = min(self.plotDataSize, self.data.size)
 
+            # self.axes.hold(False)
             self.axes.hold(True)
+            self.axes.clear()
             self.axes.plot([x for x in frange(plotStartSec, data.size, delta)],
                            data, 'g')
 
@@ -128,7 +130,12 @@ class MyDynamicMplCanvas(MyMplCanvas):
                 self.axes.set_ybound(lower=0)
 
     def evaluateVad(self):
-        return True
+        cntTrue = 0
+        for ind in self.activeIndicators.values():
+            if ind.getVoiceStatus():
+                cntTrue += 1
+        Record.VADstatus = cntTrue > 0
+        return Record.VADstatus
 
     def release_figure(self):
         self.draw()

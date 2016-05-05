@@ -5,6 +5,15 @@ import numpy
 
 class zcrIndicator(Indicator):
     fixedBounds = False
+    isVoice = False
+
+    @staticmethod
+    def getVoiceStatus():
+        return zcrIndicator.isVoice
+
+    @staticmethod
+    def getName():
+        return "zcr"
 
     @staticmethod
     def init():

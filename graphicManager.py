@@ -34,12 +34,18 @@ class GraphicManager:
         currentTime = Record.getTime()
         try:
             for ind in reg.Register.activeIndicators.values():
-                ind.data_update()
+                if ind.getName() != "wave":
+                    ind.data_update()
+            for ind in reg.Register.activeIndicators.values():
+                if ind.getName() == "wave":
+                    ind.data_update()
             for ind in reg.Register.activeIndicators.values():
                 ind.update_figure(currentTime)
+
             for ind in reg.Register.activeIndicators.values():
                 if ind.active:
                     ind.release_figure()
+
         except RuntimeError:
             # dictionary changed size
             pass

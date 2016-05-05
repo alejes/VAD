@@ -48,6 +48,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
         # timer.start(10)
         self._currentId = Record.getCurrentId()
         self.data = numpy.array([])
+        self.VADdata = numpy.array([])
         self.secondsLen = 10
         self.dataSpeed = 1
 
@@ -71,7 +72,13 @@ class MyDynamicMplCanvas(MyMplCanvas):
                 if data.size > 0 and originalSize > 0:
                     self.dataSpeed = originalSize / data.size
             # print("concat: " + str(self.data.size) + " size=" + str(data.size))
+
             self.data = numpy.concatenate((self.data, data))
+            if self.getName() == "wave":
+                releaseVAD = self.evaluateVad()
+                VADdata = data
+                VADdata.fill(0.5 if releaseVAD else 0)
+                self.VADdata = numpy.concatenate((self.VADdata, VADdata))
 
     def update_figure(self, currentTime):
         if Record.recordState == RecordStates.Run:
@@ -84,6 +91,10 @@ class MyDynamicMplCanvas(MyMplCanvas):
             data = self.data[math.floor(plotStartSec * Record.RATE / self.dataSpeed):math.floor(
                 currentTime * Record.RATE / self.dataSpeed)]
 
+            if self.getName() == "wave":
+                VADdata = self.VADdata[math.floor(plotStartSec * Record.RATE / self.dataSpeed):math.floor(
+                    currentTime * Record.RATE / self.dataSpeed)]
+
             if data.size > 0:
                 delta = (currentTime - plotStartSec) * 1.0 / data.size
             else:
@@ -93,8 +104,19 @@ class MyDynamicMplCanvas(MyMplCanvas):
             # print(data)
             # print(self.axes.transAxes)
             # plottingSize = min(self.plotDataSize, self.data.size)
+
+            self.axes.hold(True)
             self.axes.plot([x for x in frange(plotStartSec, data.size, delta)],
                            data, 'g')
+
+            fig, ax = plt.subplots(1, 1)
+            #            ax.set_xticks(data.size) # set tick positions
+
+            if self.getName() == "wave":
+                self.axes.plot([x for x in frange(plotStartSec, VADdata.size, delta)], VADdata, 'r')
+
+
+                # pass
             # self.axes.patch.set_facecolor('blue')
             # self.axes.grid(True)
             if "fixedBounds" not in self.__dict__ or self.fixedBounds:
@@ -104,6 +126,9 @@ class MyDynamicMplCanvas(MyMplCanvas):
                     self.axes.set_ybound(lower=-1, upper=1)
             else:
                 self.axes.set_ybound(lower=0)
+
+    def evaluateVad(self):
+        return True
 
     def release_figure(self):
         self.draw()

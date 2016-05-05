@@ -9,6 +9,16 @@ class energyIndicator(Indicator):
     boundMin = 0
     boundMax = 1
     maxEnergy = deque(maxlen=25)
+    isVoice = False
+
+    @staticmethod
+    def getVoiceStatus():
+        return energyIndicator.isVoice
+
+    @staticmethod
+    def getName():
+        return "energy"
+
 
     @staticmethod
     def init():
@@ -31,7 +41,6 @@ class energyIndicator(Indicator):
 
         return data
 
-    data_process.name = "energy"
     pass
 
 

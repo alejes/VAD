@@ -52,6 +52,8 @@ class Register:
         dc.data_process = currentTotalIndic.data_process
         dc.updateTime = currentTotalIndic.updateTime
         dc.fixedBounds = currentTotalIndic.fixedBounds
+        dc.getVoiceStatus = currentTotalIndic.getVoiceStatus
+        dc.getName = currentTotalIndic.getName
         if "boundMin" in currentTotalIndic.__dict__:
             dc.boundMin = currentTotalIndic.boundMin
         if "boundMax" in currentTotalIndic.__dict__:

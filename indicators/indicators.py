@@ -11,6 +11,11 @@ class Indicators(Enum):
 class Indicator:
     updateTime = 10
     fixedBounds = True
+
+    @staticmethod
+    def getName():
+        return "undefined"
+
     pass
 
 

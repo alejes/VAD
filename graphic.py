@@ -61,9 +61,9 @@ class MyDynamicMplCanvas(MyMplCanvas):
             data = Record.getDataFromTo(self._currentId, newid)
             self._currentId = newid
 
-            data = b''.join(data)
+            stringData = b''.join(data)
             try:
-                data = numpy.fromstring(data, numpy.int16) / Record.AMPLITUDE
+                data = numpy.fromstring(stringData, numpy.int16) / Record.AMPLITUDE
             except:
                 data = numpy.array([])
             if "data_process" in self.__dict__:
@@ -79,6 +79,8 @@ class MyDynamicMplCanvas(MyMplCanvas):
                 VADdata = data
                 VADdata.fill(0.5 if releaseVAD else 0)
                 self.VADdata = numpy.concatenate((self.VADdata, VADdata))
+                if releaseVAD:
+                    Record._clear_frames.append(stringData)
 
     def update_figure(self, currentTime):
         if Record.recordState == RecordStates.Run:

@@ -84,8 +84,11 @@ class Ui_MainWindow(object):
         self.actionSave_wave = QtWidgets.QAction(MainWindow)
         self.actionSave_wave.setObjectName("actionSave_wave")
         self.actionSave_wave.setShortcut('Ctrl+S')
+        self.actionSaveSpeach_wave = QtWidgets.QAction(MainWindow)
+        self.actionSaveSpeach_wave.setObjectName("actionSaveSpeach_wave")
         self.menuW2w2.addAction(self.actionOpen_wave)
         self.menuW2w2.addAction(self.actionSave_wave)
+        self.menuW2w2.addAction(self.actionSaveSpeach_wave)
         self.menuW2w2.addAction(self.actionClose_wave)
         self.menuW2w2.addAction(self.actionExit)
         self.menubar.addAction(self.menuW2w2.menuAction())
@@ -118,12 +121,14 @@ class Ui_MainWindow(object):
         self.actionClose_wave.setText(_translate("MainWindow", "Close wave"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionSave_wave.setText(_translate("MainWindow", "Save wave"))
+        self.actionSaveSpeach_wave.setText(_translate("MainWindow", "Save Speach"))
 
     def ui_prepare(self):
         self.pushButtonStart.clicked.connect(self.startButtonPress)
         self.pushButtonStop.clicked.connect(self.stopButtonPress)
         self.pushButtonPause.clicked.connect(self.pauseButtonPress)
         self.actionSave_wave.triggered.connect(self.mywindow.saveWaveMenuPress)
+        self.actionSaveSpeach_wave.triggered.connect(self.mywindow.saveSpeachMenuPress)
         self.actionOpen_wave.triggered.connect(self.mywindow.openWaveMenuPress)
         self.actionClose_wave.triggered.connect(self.mywindow.closeWaveMenuPress)
         self.actionExit.triggered.connect(sys.exit)
@@ -222,7 +227,13 @@ class ApplicationWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def saveWaveMenuPress(self):
         fname = QFileDialog.getSaveFileName(self, 'Save file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")
         if fname[0]:
-            shutil.copyfile(QtCore.QDir.currentPath() + '/output.wav', fname[0])
+            shutil.copyfile(QtCore.QDir.currentPath() + '/' + Record.WAVE_OUTPUT_FILENAME, fname[0])
+
+
+    def saveSpeachMenuPress(self):
+        fname = QFileDialog.getSaveFileName(self, 'Save speach', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")
+        if fname[0]:
+            shutil.copyfile(QtCore.QDir.currentPath() + '/'  + Record.WAVE_CLEAR_OUTPUT_FILENAME, fname[0])
 
     def openWaveMenuPress(self):
         fname = QFileDialog.getOpenFileName(self, 'Open file', QtCore.QDir.homePath(), "Wave Files (*.wav), *.wav")

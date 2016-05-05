@@ -99,6 +99,9 @@ class Record:
     def Truncate(ui):
         Record._frames = []
 
+    WAVE_OUTPUT_FILENAME = "output.wav"
+    WAVE_CLEAR_OUTPUT_FILENAME = "clear_output.wav"
+
     @staticmethod
     def Record():
         Record.RATE = 8000
@@ -108,8 +111,7 @@ class Record:
         CHANNELS = 1
 
         # RECORD_SECONDS = 5
-        WAVE_OUTPUT_FILENAME = "output.wav"
-        WAVE_CLEAR_OUTPUT_FILENAME = "clear_output.wav"
+
 
         p = pyaudio.PyAudio()
 
@@ -133,15 +135,14 @@ class Record:
         stream.close()
         p.terminate()
 
-        wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+        wf = wave.open(Record.WAVE_OUTPUT_FILENAME, 'wb')
         wf.setnchannels(CHANNELS)
         wf.setsampwidth(p.get_sample_size(FORMAT))
         wf.setframerate(Record.RATE)
         wf.writeframes(b''.join(Record._frames))
         wf.close()
 
-
-        wf = wave.open(WAVE_CLEAR_OUTPUT_FILENAME, 'wb')
+        wf = wave.open(Record.WAVE_CLEAR_OUTPUT_FILENAME, 'wb')
         wf.setnchannels(CHANNELS)
         wf.setsampwidth(p.get_sample_size(FORMAT))
         wf.setframerate(Record.RATE)

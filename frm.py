@@ -88,7 +88,8 @@ class Ui_MainWindow(object):
         self.actionSaveSpeach_wave.setObjectName("actionSaveSpeach_wave")
         self.menuW2w2.addAction(self.actionOpen_wave)
         self.menuW2w2.addAction(self.actionSave_wave)
-        self.menuW2w2.addAction(self.actionSaveSpeach_wave)
+        self.menuW2w2.addAction(self.actionSaveSpeach_wave
+                                )
         self.menuW2w2.addAction(self.actionClose_wave)
         self.menuW2w2.addAction(self.actionExit)
         self.menubar.addAction(self.menuW2w2.menuAction())

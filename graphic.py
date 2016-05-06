@@ -69,6 +69,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
             if "data_process" in self.__dict__:
                 originalSize = data.size
                 data = self.data_process(data).flatten()
+                data = data[::10]
                 if data.size > 0 and originalSize > 0:
                     self.dataSpeed = originalSize / data.size
             # print("concat: " + str(self.data.size) + " size=" + str(data.size))
@@ -108,14 +109,15 @@ class MyDynamicMplCanvas(MyMplCanvas):
             # plottingSize = min(self.plotDataSize, self.data.size)
 
             # self.axes.hold(False)
-            self.axes.hold(True)
-            self.axes.clear()
+            if self.getName() == "wave":
+                self.axes.hold(True)
+                self.axes.clear()
             self.axes.plot([x for x in frange(plotStartSec, data.size, delta)],
                            data, 'g')
 
-            fig, ax = plt.subplots(1, 1)
+            #fig, ax = plt.subplots(1, 1)
             #            ax.set_xticks(data.size) # set tick positions
-
+            #print(delta)
             if self.getName() == "wave":
                 self.axes.plot([x for x in frange(plotStartSec, VADdata.size, delta)], VADdata, 'r')
 

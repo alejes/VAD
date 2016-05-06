@@ -31,24 +31,30 @@ class GraphicManager:
     def manager(self):
         # print("manager tick")
         # print(Record.getTime())
-        currentTime = Record.getTime()
-        try:
-            for ind in reg.Register.activeIndicators.values():
-                if ind.getName() != "wave":
-                    ind.data_update()
-            for ind in reg.Register.activeIndicators.values():
-                if ind.getName() == "wave":
-                    ind.data_update()
-            for ind in reg.Register.activeIndicators.values():
-                ind.update_figure(currentTime)
+        while True:
+            currentTime = Record.getTime()
 
-            for ind in reg.Register.activeIndicators.values():
-                if ind.active:
-                    ind.release_figure()
+            startTime = time.clock()
 
-        except RuntimeError:
-            # dictionary changed size
-            pass
+            try:
+                for ind in reg.Register.activeIndicators.values():
+                    if ind.getName() != "wave":
+                        ind.data_update()
+                for ind in reg.Register.activeIndicators.values():
+                    if ind.getName() == "wave":
+                        ind.data_update()
+                for ind in reg.Register.activeIndicators.values():
+                    ind.update_figure(currentTime)
 
-        self.t = threading.Timer(0.1, self.manager, ())
-        self.t.start()
+                for ind in reg.Register.activeIndicators.values():
+                    if ind.active:
+                        ind.release_figure()
+
+            except RuntimeError:
+                # dictionary changed size
+                pass
+
+            endTime = time.clock()
+            print(endTime - startTime)
+        #self.t = threading.Timer(0.1, self.manager, ())
+        #self.t.start()

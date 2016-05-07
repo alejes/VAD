@@ -56,5 +56,8 @@ class GraphicManager:
 
             endTime = time.clock()
             print(endTime - startTime)
-        #self.t = threading.Timer(0.1, self.manager, ())
-        #self.t.start()
+            if endTime - startTime < 0.1:
+                self.t = threading.Timer(0.1, self.manager, ())
+                self.t.start()
+                break
+        #

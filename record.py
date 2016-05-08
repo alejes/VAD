@@ -3,6 +3,7 @@ import wave
 import threading
 import matplotlib.pyplot as plt
 import numpy
+import math
 from details_classes import *
 import time
 
@@ -150,6 +151,37 @@ class Record:
         wf.close()
 
         Record._frames = []
+
+        import register as reg1
+        print("imp")
+        for ind in reg1.Register.activeIndicators.values():
+            Record.writeIndicator(ind)
+
+    @staticmethod
+    def analyse(dic, start, finish):
+        start = min(start, dic.size)
+        finish = min(finish, dic.size)
+        sum = 0
+        mx = dic[start]
+        mn = dic[start]
+        avg = 0
+        for i in range(start, finish):
+            sum += dic[i]
+            mx = max(mx, dic[i])
+            mn = min(mn, dic[i])
+        avg = 1.0 * sum / (finish - start)
+        return (sum, avg, mn, mx)
+
+    @staticmethod
+    def writeIndicator(indic):
+        print(indic.getName())
+        with open("logs/log_" + indic.getName() + ".txt", "w+") as f:
+            perHalfOfSec = math.floor(0.5 / indic.dataTimeSpeed)
+            idSec = 0
+            print("sec: (sum, avg, min, max)", file=f)
+            for i in range(0, indic.data.size, perHalfOfSec):
+                print(str(idSec) + "s: " + str(Record.analyse(indic.data, i, i + perHalfOfSec)), file=f)
+                idSec += 0.5
 
     @staticmethod
     def Play():

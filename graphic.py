@@ -69,10 +69,13 @@ class MyDynamicMplCanvas(MyMplCanvas):
             if "data_process" in self.__dict__:
                 originalSize = data.size
                 data = self.data_process(data).flatten()
-                data = data[::10]
+                if self.getName() != "mfcc":
+                    data = data[::10]
                 if data.size > 0 and originalSize > 0:
                     self.dataSpeed = originalSize / data.size
+                    print( self.getName() + "   originalSize = " + str(originalSize )  + "; data.size = " + str(data.size) + " skorsspeed = " + str(self.dataSpeed))
             # print("concat: " + str(self.data.size) + " size=" + str(data.size))
+
 
             self.data = numpy.concatenate((self.data, data))
             if self.getName() == "wave":
@@ -99,9 +102,9 @@ class MyDynamicMplCanvas(MyMplCanvas):
                     currentTime * Record.RATE / self.dataSpeed)]
 
             if data.size > 0:
-                delta = (currentTime - plotStartSec) * 1.0 / data.size
+                self.dataTimeSpeed = (currentTime - plotStartSec) * 1.0 / data.size
             else:
-                delta = 1
+                self.dataTimeSpeed = 1
 
             # print("plotStartSec = " + str(plotStartSec)  + " Record.RATE="  +str(Record.RATE) + "  self.dataSpeed=" + str(self.dataSpeed) + " currentTime =" + str(currentTime ) + " delta = " + str(delta) )
             # print(data)
@@ -112,14 +115,14 @@ class MyDynamicMplCanvas(MyMplCanvas):
             if self.getName() == "wave":
                 self.axes.hold(True)
                 self.axes.clear()
-            self.axes.plot([x for x in frange(plotStartSec, data.size, delta)],
+            self.axes.plot([x for x in frange(plotStartSec, data.size, self.dataTimeSpeed)],
                            data, 'g')
 
             #fig, ax = plt.subplots(1, 1)
             #            ax.set_xticks(data.size) # set tick positions
             #print(delta)
             if self.getName() == "wave":
-                self.axes.plot([x for x in frange(plotStartSec, VADdata.size, delta)], VADdata, 'r')
+                self.axes.plot([x for x in frange(plotStartSec, VADdata.size, self.dataTimeSpeed)], VADdata, 'r')
 
 
                 # pass

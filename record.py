@@ -153,7 +153,6 @@ class Record:
         Record._frames = []
 
         import register as reg1
-        print("imp")
         for ind in reg1.Register.activeIndicators.values():
             Record.writeIndicator(ind)
 
@@ -182,6 +181,20 @@ class Record:
             for i in range(0, indic.data.size, perHalfOfSec):
                 print(str(idSec) + "s: " + str(Record.analyse(indic.data, i, i + perHalfOfSec)), file=f)
                 idSec += 0.5
+
+    @staticmethod
+    def writeIndicatorAnalyse(indic):
+        print(indic.getName())
+        with open("logs/anal_" + indic.getName() + ".txt", "w+") as f:
+            if indic.getName() == "mfcc":
+                perHalfOfSec = 156
+            else:
+                perHalfOfSec = 103
+
+            print("sum\tavg\tmin\tmax", file=f)
+            for i in range(0, indic.data.size, perHalfOfSec):
+                (sum, avg, mn, mx) = Record.analyse(indic.data, i, i + perHalfOfSec)
+                print(str(sum) + "\t" + str(avg) + "\t" + str(mn) + "\t" + str(mx), file=f)
 
     @staticmethod
     def Play():
@@ -214,3 +227,7 @@ class Record:
         p.terminate()
         Record._frames = []
         Record.stopRecord()
+
+        import register as reg1
+        for ind in reg1.Register.activeIndicators.values():
+            Record.writeIndicatorAnalyse(ind)

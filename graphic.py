@@ -73,7 +73,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
                     data = data[::10]
                 if data.size > 0 and originalSize > 0:
                     self.dataSpeed = originalSize / data.size
-                    print( self.getName() + "   originalSize = " + str(originalSize )  + "; data.size = " + str(data.size) + " skorsspeed = " + str(self.dataSpeed))
+                    #print( self.getName() + "   originalSize = " + str(originalSize )  + "; data.size = " + str(data.size) + " skorsspeed = " + str(self.dataSpeed))
             # print("concat: " + str(self.data.size) + " size=" + str(data.size))
 
 

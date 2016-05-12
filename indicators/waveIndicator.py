@@ -5,7 +5,7 @@ from register import *
 class waveIndicator(Indicator):
     boundMin = -1
     boundMax = 1
-    isVoice = False
+    isVoice = 0
 
     @staticmethod
     def getVoiceStatus():

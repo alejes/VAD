@@ -125,7 +125,7 @@ def get_filterbanks(nfilt=20, nfft=512, samplerate=16000, lowfreq=0, highfreq=No
 class mfccIndicator(Indicator):
     boundMin = -100
     boundMax = 100
-    isVoice = False
+    isVoice = 0
 
     @staticmethod
     def getVoiceStatus():
@@ -143,6 +143,22 @@ class mfccIndicator(Indicator):
     def data_process(data):
         # print(data - mfcc(data, Record.RATE))
         # print("mfcc" + str(len(data)))
+
+        (sum, avg, mn, mx) = Indicator.analyse(data)
+
+        mfccIndicator.isVoice = 0
+        if sum > -1000:
+            mfccIndicator.isVoice += 1
+
+        if avg > -7:
+            mfccIndicator.isVoice += 1
+
+        if mn < 28:
+            mfccIndicator.isVoice += 1
+
+        if mx > 0.25:
+            mfccIndicator.isVoice += 1
+
         return mfcc(data, 8000)
 
     pass

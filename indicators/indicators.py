@@ -18,6 +18,20 @@ class Indicator:
 
     pass
 
+    @staticmethod
+    def analyse(dic):
+        if dic.size == 0:
+            return (0, 0, 10000, -10000)
+        sum = 0
+        mx = dic[0]
+        mn = dic[0]
+        avg = 0
+        for value in dic:
+            sum += value
+            mx = max(mx, value)
+            mn = min(mn, value)
+        avg = 1.0 * sum / dic.size
+        return (sum, avg, mn, mx)
 
 class IndicatorsList:
     list = {}

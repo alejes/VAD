@@ -9,7 +9,7 @@ class energyIndicator(Indicator):
     boundMin = 0
     boundMax = 1
     maxEnergy = deque(maxlen=25)
-    isVoice = False
+    isVoice = 0
 
     @staticmethod
     def getVoiceStatus():
@@ -47,7 +47,7 @@ class energyIndicator(Indicator):
         else:
             data.fill(math.sqrt(sum))
 
-        energyIndicator.isVoice = haveVoice
+        energyIndicator.isVoice = 4 if haveVoice else 0
         return data
 
     pass

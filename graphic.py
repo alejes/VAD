@@ -139,9 +139,8 @@ class MyDynamicMplCanvas(MyMplCanvas):
     def evaluateVad(self):
         cntTrue = 0
         for ind in self.activeIndicators.values():
-            if ind.getVoiceStatus():
-                cntTrue += 1
-        Record.VADstatus = cntTrue > 0
+            cntTrue += ind.getVoiceStatus()
+        Record.VADstatus = cntTrue > 6
         return Record.VADstatus
 
     def release_figure(self):

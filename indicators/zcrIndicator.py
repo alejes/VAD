@@ -5,7 +5,7 @@ import numpy
 
 class zcrIndicator(Indicator):
     fixedBounds = False
-    isVoice = False
+    isVoice = 0
 
     @staticmethod
     def getVoiceStatus():
@@ -28,6 +28,22 @@ class zcrIndicator(Indicator):
 
         if data.size > 0:
             data.fill(cnt * 1.0 / data.size)
+
+        (sum, avg, mn, mx) = Indicator.analyse(data)
+
+        zcrIndicator.isVoice = 0
+        if sum < 28.3:
+            zcrIndicator.isVoice += 1
+
+        if avg < 0.2:
+            zcrIndicator.isVoice += 1
+
+        if mn < 0.25:
+            zcrIndicator.isVoice += 1
+
+        if mx < 0.21:
+            zcrIndicator.isVoice += 1
+
 
         return data
 

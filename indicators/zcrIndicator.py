@@ -1,6 +1,6 @@
 from indicators import *
 from register import *
-import numpy
+import numpy as np
 
 
 class zcrIndicator(Indicator):
@@ -31,23 +31,28 @@ class zcrIndicator(Indicator):
 
         (sum, avg, mn, mx) = Indicator.analyse(data)
 
-        zcrIndicator.isVoice = 0
-        if sum < 28.3:
-            zcrIndicator.isVoice += 1
+        ridge_classifier = np.dot([sum, avg, mn, mx], zcrIndicator.coef_) + zcrIndicator.intercept_
 
-        if avg < 0.2:
-            zcrIndicator.isVoice += 1
+        print(ridge_classifier)
 
-        if mn < 0.25:
-            zcrIndicator.isVoice += 1
-
-        if mx < 0.21:
-            zcrIndicator.isVoice += 1
-
+        if data.size > 0:
+            zcrIndicator.isVoice = 1 if ridge_classifier > 0 else 0
+        else:
+            zcrIndicator.isVoice = 0
+        if data.size > 0:
+            with open("logs/anal_zcr.txt", "a+") as f:
+                print(str(sum) + "\t" + str(avg) + "\t" + str(mn) + "\t" + str(mx), file=f)
 
         return data
 
 
-class waveIndicator_details:
+class zcrIndicator_details:
     print("zcr indicator loaded")
     IndicatorsList.list[Indicators.ZCR] = zcrIndicator
+
+    zcrIndicator.intercept_ = 1.2667888
+    # zcrIndicator.intercept_ = 1.05829294
+    zcrIndicator.coef_ = [6.03061087e-04, -1.87091677e+00, -1.87091677e+00, -1.87091677e+00]
+    # zcrIndicator.coef_ = [6.70199398e-04, -1.73216290e+00, -1.73216290e+00, -1.73216290e+00]
+    # zcrIndicator.ridge_classifier =  linear_model.RidgeClassifier(random_state=1)
+    # zcrIndicator.ridge_classifier.set_param([[-0.01170097,  0.10515885, -6.70570814,  1.65434725]])

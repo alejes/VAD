@@ -21,8 +21,11 @@ class waveIndicator(Indicator):
 
     @staticmethod
     def data_process(data):
+        (sum, avg, mn, mx) = Indicator.analyse(data)
+        if data.size > 0:
+            with open("logs/anal_wave.txt", "a+") as f:
+                print(str(sum) + "\t" + str(avg) + "\t" + str(mn) + "\t" + str(mx), file=f)
         return data
-
 
     pass
 

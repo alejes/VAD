@@ -1,5 +1,6 @@
 from indicators import *
 from register import *
+import numpy as np
 from collections import deque
 import math
 
@@ -47,7 +48,24 @@ class energyIndicator(Indicator):
         else:
             data.fill(math.sqrt(sum))
 
-        energyIndicator.isVoice = 4 if haveVoice else 0
+        # energyIndicator.isVoice = 4 if haveVoice else 0
+
+        (sum, avg, mn, mx) = Indicator.analyse(data)
+
+        ridge_classifier = np.dot([sum, avg, mn, mx], energyIndicator.coef_) + energyIndicator.intercept_
+
+        if data.size > 0:
+            energyIndicator.isVoice = 1 if ridge_classifier > 0 else 0
+        else:
+            energyIndicator.isVoice = 0
+
+        if not haveVoice:
+            energyIndicator.isVoice = -10
+
+        if data.size > 0:
+            with open("logs/anal_energy.txt", "a+") as f:
+                print(str(sum) + "\t" + str(avg) + "\t" + str(mn) + "\t" + str(mx), file=f)
+
         return data
 
     pass
@@ -56,3 +74,7 @@ class energyIndicator(Indicator):
 class energyIndicator_details:
     print("energy indicator loaded")
     IndicatorsList.list[Indicators.Energy] = energyIndicator
+    energyIndicator.intercept_ = -0.43582075
+    # energyIndicator.intercept_ = -0.53095882
+    energyIndicator.coef_ = [-5.19400273e-05, 7.44976464e-01, 7.44976464e-01, 7.44976464e-01]
+    # energyIndicator.coef_ = [1.64026857e-04, 5.83134532e-01, 5.83134532e-01, 5.83134532e-01]

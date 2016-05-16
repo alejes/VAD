@@ -173,6 +173,7 @@ class Record:
 
     @staticmethod
     def writeIndicator(indic):
+        return
         print(indic.getName())
         with open("logs/log_" + indic.getName() + ".txt", "w+") as f:
             perHalfOfSec = math.floor(0.5 / indic.dataTimeSpeed)
@@ -184,6 +185,7 @@ class Record:
 
     @staticmethod
     def writeIndicatorAnalyse(indic):
+        return
         print(indic.getName())
         with open("logs/anal_" + indic.getName() + ".txt", "w+") as f:
             if indic.getName() == "mfcc":

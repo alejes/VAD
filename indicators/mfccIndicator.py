@@ -3,6 +3,7 @@ from register import *
 from scipy.fftpack import dct
 import indicators.sigproc as sigproc
 import numpy
+import numpy as np
 
 
 def mfcc(signal, samplerate=16000, winlen=0.025, winstep=0.01, numcep=13,
@@ -146,18 +147,16 @@ class mfccIndicator(Indicator):
 
         (sum, avg, mn, mx) = Indicator.analyse(data)
 
-        mfccIndicator.isVoice = 0
-        if sum > -1000:
-            mfccIndicator.isVoice += 1
+        ridge_classifier = np.dot([sum, avg, mn, mx], mfccIndicator.coef_) + mfccIndicator.intercept_
 
-        if avg > -7:
-            mfccIndicator.isVoice += 1
+        if data.size > 0:
+            mfccIndicator.isVoice = 1 if ridge_classifier > 0 else 0
+        else:
+            mfccIndicator.isVoice = 0
 
-        if mn < 28:
-            mfccIndicator.isVoice += 1
-
-        if mx > 0.25:
-            mfccIndicator.isVoice += 1
+        if data.size > 0:
+            with open("logs/anal_mfcc.txt", "a+") as f:
+                print(str(sum) + "\t" + str(avg) + "\t" + str(mn) + "\t" + str(mx), file=f)
 
         return mfcc(data, 8000)
 
@@ -167,3 +166,7 @@ class mfccIndicator(Indicator):
 class mfccIndicator_details:
     print("mfcc indicator loaded")
     IndicatorsList.list[Indicators.MFCC] = mfccIndicator
+    mfccIndicator.intercept_ = 0.03706001
+    # mfccIndicator.intercept_ = -0.09185181
+    mfccIndicator.coef_ = [2.24705795e-01, -3.67851199e-05, 6.78761342e+00, 5.88674899e+00]
+    # mfccIndicator.coef_ = [1.91762666e-01, -1.14196459e-04, 6.39406601e+00, 5.55344106e+00]

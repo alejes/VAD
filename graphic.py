@@ -73,7 +73,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
                     data = data[::10]
                 if data.size > 0 and originalSize > 0:
                     self.dataSpeed = originalSize / data.size
-                    #print( self.getName() + "   originalSize = " + str(originalSize )  + "; data.size = " + str(data.size) + " skorsspeed = " + str(self.dataSpeed))
+                    # print( self.getName() + "   originalSize = " + str(originalSize )  + "; data.size = " + str(data.size) + " skorsspeed = " + str(self.dataSpeed))
             # print("concat: " + str(self.data.size) + " size=" + str(data.size))
 
 
@@ -118,9 +118,9 @@ class MyDynamicMplCanvas(MyMplCanvas):
             self.axes.plot([x for x in frange(plotStartSec, data.size, self.dataTimeSpeed)],
                            data, 'g')
 
-            #fig, ax = plt.subplots(1, 1)
+            # fig, ax = plt.subplots(1, 1)
             #            ax.set_xticks(data.size) # set tick positions
-            #print(delta)
+            # print(delta)
             if self.getName() == "wave":
                 self.axes.plot([x for x in frange(plotStartSec, VADdata.size, self.dataTimeSpeed)], VADdata, 'r')
 
@@ -140,7 +140,8 @@ class MyDynamicMplCanvas(MyMplCanvas):
         cntTrue = 0
         for ind in self.activeIndicators.values():
             cntTrue += ind.getVoiceStatus()
-        Record.VADstatus = cntTrue > 6
+        Record.VADstatus = cntTrue >= 2
+        print(cntTrue)
         return Record.VADstatus
 
     def release_figure(self):

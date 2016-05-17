@@ -166,7 +166,9 @@ class mfccIndicator(Indicator):
 class mfccIndicator_details:
     print("mfcc indicator loaded")
     IndicatorsList.list[Indicators.MFCC] = mfccIndicator
-    mfccIndicator.intercept_ = 0.03706001
+    mfccIndicator.intercept_ = 0.61336651
+    # mfccIndicator.intercept_ = 0.03706001
     # mfccIndicator.intercept_ = -0.09185181
-    mfccIndicator.coef_ = [2.24705795e-01, -3.67851199e-05, 6.78761342e+00, 5.88674899e+00]
+    mfccIndicator.coef_ = [-8.70000408e-02, -4.49398273e-04, 5.31164313e+00, 2.36476296e+00]
+    # mfccIndicator.coef_ = [2.24705795e-01, -3.67851199e-05, 6.78761342e+00, 5.88674899e+00]
     # mfccIndicator.coef_ = [1.91762666e-01, -1.14196459e-04, 6.39406601e+00, 5.55344106e+00]

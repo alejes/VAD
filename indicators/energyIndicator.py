@@ -29,24 +29,24 @@ class energyIndicator(Indicator):
 
     @staticmethod
     def data_process(data):
-        sum = 0
+        sumSquare = 0
         haveVoice = False
         for dataFrame in data:
-            sum += dataFrame * dataFrame
+            sumSquare += dataFrame * dataFrame
             if dataFrame > energyIndicator.thresholdOnce:
                 haveVoice = True
 
-        if sum > energyIndicator.thresholdTotal:
+        if sumSquare > energyIndicator.thresholdTotal:
             haveVoice = True
 
-        energyIndicator.maxEnergy.append(math.sqrt(sum))
+        energyIndicator.maxEnergy.append(math.sqrt(sumSquare))
 
         currentMaxEnergy = max(1, max(energyIndicator.maxEnergy))
 
         if currentMaxEnergy > 0:
-            data.fill(math.sqrt(sum) / currentMaxEnergy)
+            data.fill(math.sqrt(sumSquare) / currentMaxEnergy)
         else:
-            data.fill(math.sqrt(sum))
+            data.fill(math.sqrt(sumSquare))
 
         # energyIndicator.isVoice = 4 if haveVoice else 0
 

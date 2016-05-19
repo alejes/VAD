@@ -60,6 +60,9 @@ class Ui_MainWindow(object):
         self.checkBoxMFCC = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBoxMFCC.setGeometry(QtCore.QRect(470, 10, 70, 17))
         self.checkBoxMFCC.setObjectName("checkBoxMFCC")
+        self.checkBoxAutoc = QtWidgets.QCheckBox(self.centralwidget)
+        self.checkBoxAutoc.setGeometry(QtCore.QRect(530, 10, 70, 17))
+        self.checkBoxAutoc.setObjectName("checkBoxAutoc")
         self.pushButtonPause = QtWidgets.QPushButton(self.centralwidget)
         self.pushButtonPause.setEnabled(False)
         self.pushButtonPause.setGeometry(QtCore.QRect(100, 10, 75, 23))
@@ -116,6 +119,7 @@ class Ui_MainWindow(object):
         self.checkBoxEnergy.setText(_translate("MainWindow", "Energy"))
         self.checkBoxZCR.setText(_translate("MainWindow", "ZCR"))
         self.checkBoxMFCC.setText(_translate("MainWindow", "MFCC"))
+        self.checkBoxAutoc.setText(_translate("MainWindow", "AUTOC"))
         self.pushButtonPause.setText(_translate("MainWindow", "Pause"))
         self.menuW2w2.setTitle(_translate("MainWindow", "Menu"))
         self.actionOpen_wave.setText(_translate("MainWindow", "Open wave"))
@@ -137,11 +141,13 @@ class Ui_MainWindow(object):
         self.checkBoxEnergy.clicked.connect(self.energyCheckBoxPress)
         self.checkBoxZCR.clicked.connect(self.zcrCheckBoxPress)
         self.checkBoxMFCC.clicked.connect(self.mfccCheckBoxPress)
+        self.checkBoxAutoc.clicked.connect(self.autocCheckBoxPress)
 
         Register.addIndicator(Indicators.Wave, self, True)
         Register.addIndicator(Indicators.MFCC, self, False)
         Register.addIndicator(Indicators.Energy, self, False)
         Register.addIndicator(Indicators.ZCR, self, False)
+        Register.addIndicator(Indicators.AUTOC, self, False)
         Record.ui = self
 
     def waveCheckBoxPress(self):
@@ -167,6 +173,12 @@ class Ui_MainWindow(object):
             Register.switchOn(Indicators.MFCC, self)
         else:
             Register.switchOff(Indicators.MFCC, self)
+
+    def autocCheckBoxPress(self):
+        if self.checkBoxAutoc.isChecked():
+            Register.switchOn(Indicators.AUTOC, self)
+        else:
+            Register.switchOff(Indicators.AUTOC, self)
 
     def startButtonPress(self):
         self.pushButtonStop.setEnabled(True)

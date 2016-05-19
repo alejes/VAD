@@ -6,6 +6,7 @@ class Indicators(Enum):
     Energy = 1
     ZCR = 2
     MFCC = 3
+    AUTOC = 4
 
 
 class Indicator:

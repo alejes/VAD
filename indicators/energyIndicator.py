@@ -64,7 +64,7 @@ class energyIndicator(Indicator):
 
         if data.size > 0:
             with open("logs/anal_energy.txt", "a+") as f:
-                print(str(sum) + "\t" + str(avg) + "\t" + str(mn) + "\t" + str(mx), file=f)
+                print(str(sum) + "\t" + str(avg) + "\t" + str(mn) + "\t" + str(mx) + "\t" + str(sumSquare), file=f)
 
         return data
 

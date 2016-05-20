@@ -33,7 +33,7 @@ class autocIndicator(Indicator):
         ridge_classifier = np.dot([sum, avg, mn, mx], autocIndicator.coef_) + autocIndicator.intercept_
 
         if data.size > 0:
-            autocIndicator.isVoice = 1 if ridge_classifier > 0 else 0
+            autocIndicator.isVoice = 0 if ridge_classifier > 0 else 0
         else:
             autocIndicator.isVoice = 0
 
